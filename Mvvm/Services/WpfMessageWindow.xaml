@@ -1,0 +1,45 @@
+﻿<Controls:MetroWindow x:Class="NicoV5.Mvvm.Services.WpfMessageWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:NicoV5.Mvvm.Services"
+                      mc:Ignorable="d"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:behavior="clr-namespace:WpfUtilV2.Mvvm.Behaviors;assembly=WpfUtilV2"
+                      ResizeMode="NoResize"
+                      SizeToContent="WidthAndHeight"
+                      WindowStartupLocation="CenterOwner"
+                      behavior:WindowRequestCloseBehavior.DialogResult="{Binding DialogResult}"
+                      Title="{Binding Title}">
+    <DockPanel Margin="10">
+
+        <UniformGrid DockPanel.Dock="Bottom"
+                     Visibility="{Binding IsOkCancel, Converter={StaticResource Boolean2VisibilityCollapsedConverter}}"
+                     Columns="2">
+            <Button Content="OK" 
+                    IsDefault="True"
+                    Command="{Binding OnClickOK}" />
+            <Button Content="ｷｬﾝｾﾙ" 
+                    IsCancel="True"
+                    Command="{Binding OnClickCancel}" />
+        </UniformGrid>
+
+        <Grid DockPanel.Dock="Bottom"
+              Visibility="{Binding IsOkOnly, Converter={StaticResource Boolean2VisibilityCollapsedConverter}}">
+            <Button Content="OK" 
+                    IsDefault="True"
+                    Command="{Binding OnClickOK}"
+                    Width="100"/>
+        </Grid>
+
+        <Image DockPanel.Dock="Left"
+               Source="{Binding Icon}"
+               Style="{StaticResource EqualMagnificationImage}" />
+
+        <TextBlock Margin="10"
+                   Text="{Binding Message}"
+                   TextWrapping="Wrap"/>
+
+    </DockPanel>
+</Controls:MetroWindow>

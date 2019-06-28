@@ -1,0 +1,117 @@
+﻿<Application x:Class="NicoV5.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:NicoV5"
+             xmlns:converter="clr-namespace:WpfUtilV2.Mvvm.Converters;assembly=WpfUtilV2"
+             xmlns:Behaviors="clr-namespace:WpfUtilV2.Mvvm.Behaviors;assembly=WpfUtilV2"
+             StartupUri="Mvvm\Main\MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--
+                全画面共通ﾘｿｰｽ
+            -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cobalt.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--
+                ｺﾝﾊﾞｰﾀ定義
+            -->
+            <converter:TypeCompareConverter x:Key="TypeCompareConverter" />
+            <converter:Boolean2EnumConverter x:Key="Boolean2EnumConverter" />
+            <converter:Boolean2VisibilityHiddenConverter x:Key="Boolean2VisibilityHiddenConverter" />
+            <converter:Boolean2VisibilityCollapsedConverter x:Key="Boolean2VisibilityCollapsedConverter" />
+            <converter:Double2StringFormatConverter x:Key="Double2StringFormatConverter" />
+            <converter:Int2StringFormatConverter x:Key="Int2StringFormatConverter" />
+            <converter:DateTime2StringFormatConverter x:Key="DateTime2StringFormatConverter" />
+            <converter:Tick2DateDisplayConverter x:Key="Tick2DateDisplayConverter" />
+            <converter:BooleanReverseConverter x:Key="BooleanReverseConverter" />
+            <converter:Null2BooleanConverter x:Key="Null2BooleanConverter" />
+            <converter:ValueConverterGroup x:Key="BooleanReverse2VisibilityHiddenConverter">
+                <converter:BooleanReverseConverter />
+                <converter:Boolean2VisibilityHiddenConverter />
+            </converter:ValueConverterGroup>
+            <converter:ValueConverterGroup x:Key="BooleanReverse2VisibilityCollapsedConverter">
+                <converter:BooleanReverseConverter />
+                <converter:Boolean2VisibilityCollapsedConverter />
+            </converter:ValueConverterGroup>
+
+
+            <!--
+                共通定義
+            -->
+            <Style x:Key="EqualMagnificationImage" TargetType="Image">
+                <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}" />
+                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}" />
+            </Style>
+            <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="Padding" Value="1" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="DefaultTextBox" TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="Padding" Value="1" />
+            </Style>
+            <Style x:Key="DefaultPasswordBox" TargetType="PasswordBox" BasedOn="{StaticResource MetroPasswordBox}">
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="Padding" Value="1" />
+            </Style>
+            <Style x:Key="DefaultButton" TargetType="Button" BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}">
+            </Style>
+            <Style x:Key="DefaultImage" TargetType="Image">
+                <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}" />
+                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}" />
+            </Style>
+            <Style x:Key="DefaultComboBox" TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.Items}" />
+                <Setter Property="SelectedItem" Value="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.SelectedItem}" />
+                <Setter Property="DisplayMemberPath" Value="Description" />
+            </Style>
+
+            <!--
+                SettingWindow定義
+            -->
+            <Style x:Key="SettingWindow.Border" TargetType="Border">
+                <Setter Property="Margin" Value="3" />
+                <Setter Property="Padding" Value="3" />
+                <Setter Property="BorderBrush" Value="{StaticResource AccentColorBrush2}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+            <Style x:Key="SettingWindow.Grid" TargetType="Grid">
+                <Setter Property="Margin" Value="3" />
+            </Style>
+            <Style x:Key="SettingWindow.Button" TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+                <Setter Property="Width" Value="100" />
+                <Setter Property="Height" Value="30" />
+            </Style>
+
+            <!--
+                VideoItemsWindow定義
+            -->
+            <Style x:Key="VideoWindow.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}">
+                <Setter Property="Behaviors:ControlMouseDoubleClickBehavior.Command" Value="{Binding OnDoubleClick}" />
+                <Setter Property="Behaviors:ControlKeyDownBehavior.Command" Value="{Binding OnKeyDown}" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="追加"
+                                          Command="{Binding OnTemporaryAdd}" />
+                            <MenuItem Header="削除" 
+                                          Command="{Binding OnTemporaryDel}" />
+                            <MenuItem Header="ﾀﾞｳﾝﾛｰﾄﾞ" 
+                                          Command="{Binding OnDownload}" />
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

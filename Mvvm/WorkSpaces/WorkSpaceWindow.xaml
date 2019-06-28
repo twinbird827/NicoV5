@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="NicoV5.Mvvm.WorkSpaces.WorkSpaceWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NicoV5.Mvvm.WorkSpaces"
+             xmlns:behavior="clr-namespace:WpfUtilV2.Mvvm.Behaviors;assembly=WpfUtilV2"
+             behavior:FrameworkElementLoadedBehavior.Command="{Binding OnLoaded}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type local:SearchMylistViewModel}">
+            <local:SearchMylistWindow />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:SearchVideoByMylistViewModel}">
+            <local:SearchVideoByMylistWindow />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:SearchVideoByRankingViewModel}">
+            <local:SearchVideoByRankingWindow />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:SearchVideoByTemporaryViewModel}">
+            <local:SearchVideoByTemporaryWindow />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:SettingViewModel}">
+            <local:SettingWindow />
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <ContentPresenter Content="{Binding}" />
+</UserControl>

@@ -1,0 +1,57 @@
+﻿<Controls:MetroWindow x:Class="NicoV5.Mvvm.Main.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:NicoV5.Mvvm.Main"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:behavior="clr-namespace:WpfUtilV2.Mvvm.Behaviors;assembly=WpfUtilV2"
+                      xmlns:ws="clr-namespace:NicoV5.Mvvm.WorkSpaces"
+                      mc:Ignorable="d"
+                      SaveWindowPosition="True"
+                      BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+                      TitleCaps="False"
+                      Title="MainWindow"
+                      behavior:FrameworkElementLoadedBehavior.Command="{Binding OnLoaded}"
+                      behavior:WindowClosedBehavior.Disposable="{Binding}">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate DataType="{x:Type ws:WorkSpaceViewModel}">
+                <ws:WorkSpaceWindow />
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+    
+    <Controls:MetroWindow.DataContext>
+        <local:MainViewModel>
+            <local:MainViewModel.DialogCoordinator>
+                <Dialog:DialogCoordinator />
+            </local:MainViewModel.DialogCoordinator>
+        </local:MainViewModel>
+    </Controls:MetroWindow.DataContext>
+
+    <DockPanel>
+
+        <StatusBar DockPanel.Dock="Bottom" IsTabStop="False">
+
+        </StatusBar>
+
+        <StackPanel DockPanel.Dock="Left"
+                    Orientation="Vertical">
+
+            <Button Content="ｵﾌﾟｼｮﾝ"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.Setting}" />
+
+        </StackPanel>
+
+        <ContentPresenter Margin="3"
+                          Content="{Binding Current}" />
+
+    </DockPanel>
+    
+</Controls:MetroWindow>
