@@ -8,6 +8,7 @@ namespace NicoV5.Mvvm.Main
 {
     public enum MenuType
     {
+        SearchByRanking,
 
         Setting,
     }

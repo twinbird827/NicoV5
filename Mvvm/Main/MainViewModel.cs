@@ -199,6 +199,9 @@ namespace NicoV5.Mvvm.Main
         {
             switch (type)
             {
+                case MenuType.SearchByRanking:
+                    Current = new SearchVideoByRankingViewModel();
+                    break;
                 case MenuType.Setting:
                     Current = new SettingViewModel();
                     break;

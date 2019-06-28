@@ -71,10 +71,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Mvvm\Components\VideoItemsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Mvvm\Components\VideoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,11 +93,9 @@
     <Compile Include="Common\Tables\TSetting.cs" />
     <Compile Include="Common\Tables\TView.cs" />
     <Compile Include="Mvvm\Combos\ComboboxItemModel.cs" />
+    <Compile Include="Mvvm\Combos\ComboboxModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankGenreModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankPeriodModel.cs" />
-    <Compile Include="Mvvm\Components\VideoItemsWindow.xaml.cs">
-      <DependentUpon>VideoItemsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Mvvm\Components\VideoViewModel.cs" />
     <Compile Include="Mvvm\Components\VideoWindow.xaml.cs">
       <DependentUpon>VideoWindow.xaml</DependentUpon>

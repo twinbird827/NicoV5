@@ -31,6 +31,15 @@
             <ComboBox DataContext="{Binding Period}" />
 
         </StackPanel>
-        
+
+        <ListBox ItemsSource="{Binding Videos}"
+                 ItemContainerStyle="{StaticResource VideoWindow.ItemContainerStyle}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.ScrollUnit="Pixel"
+                 HorizontalAlignment="Stretch">
+        </ListBox>
+
     </DockPanel>
+    
 </UserControl>

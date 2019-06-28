@@ -47,6 +47,10 @@
                     Command="{Binding OnClickMenu}"
                     CommandParameter="{x:Static local:MenuType.Setting}" />
 
+            <Button Content="ﾗﾝｷﾝｸﾞ"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchByRanking}" />
+
         </StackPanel>
 
         <ContentPresenter Margin="3"

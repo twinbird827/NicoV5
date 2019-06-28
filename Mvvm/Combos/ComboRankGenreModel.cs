@@ -8,32 +8,12 @@ using WpfUtilV2.Mvvm;
 
 namespace NicoV5.Mvvm.Combos
 {
-    public class ComboRankGenreModel : BindableBase
+    public class ComboRankGenreModel : ComboboxModel
     {
         /// <summary>
         /// ｲﾝｽﾀﾝｽ (ｼﾝｸﾞﾙﾄﾝﾊﾟﾀｰﾝ)
         /// </summary>
         public static ComboRankGenreModel Instance { get; } = new ComboRankGenreModel();
-
-        /// <summary>
-        /// ｿｰﾄﾘｽﾄ構成
-        /// </summary>
-        public ObservableCollection<ComboboxItemModel> Items
-        {
-            get { return _Items; }
-            set { SetProperty(ref _Items, value); }
-        }
-        private ObservableCollection<ComboboxItemModel> _Items;
-
-        /// <summary>
-        /// 選択中の構成
-        /// </summary>
-        public ComboboxItemModel SelectedItem
-        {
-            get { return _SelectedItem; }
-            set { SetProperty(ref _SelectedItem, value); }
-        }
-        private ComboboxItemModel _SelectedItem;
 
         private ComboRankGenreModel()
         {
