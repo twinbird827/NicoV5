@@ -38,13 +38,13 @@
 
                     <TextBlock Grid.Row="0" 
                                Grid.Column="0" 
-                               Text="メールアドレス" />
+                               Text="ﾒｰﾙｱﾄﾞﾚｽ" />
                     <TextBox Grid.Row="0" 
                                Grid.Column="1" 
                                Text="{Binding MailAddress}" />
                     <TextBlock Grid.Row="1" 
                                Grid.Column="0" 
-                               Text="パスワード" />
+                               Text="ﾊﾟｽﾜｰﾄﾞ" />
                     <PasswordBox Grid.Row="1" 
                                  Grid.Column="1" 
                                  behaviors:PasswordBoxChangedBehavior.Password="{Binding Password}"/>

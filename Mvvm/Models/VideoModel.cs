@@ -226,7 +226,7 @@ namespace NicoV5.Mvvm.Models
             Process.Start(SettingModel.Instance.Browser, VideoUrl);
 
             // SEEﾘｽﾄに追加
-            await ViewModel.Instance.AddView(VideoId);
+            await SearchVideoByHistoryModel.Instance.AddHistory(VideoId);
 
             // ｽﾃｰﾀｽ変更
             Status = VideoStatus.See;

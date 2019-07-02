@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfUtilV2.Extensions;
 using WpfUtilV2.Mvvm;
@@ -128,6 +129,102 @@ namespace NicoV5.Mvvm.Components
         }
         private DateTime _StartDate;
 
+        /// <summary>
+        /// 項目ﾀﾞﾌﾞﾙｸﾘｯｸ時ｲﾍﾞﾝﾄ
+        /// </summary>
+        public ICommand OnDoubleClick
+        {
+            get
+            {
+                return _OnDoubleClick = _OnDoubleClick ?? new RelayCommand(
+                async _ =>
+                {
+                    // ﾌﾞﾗｳｻﾞ表示
+                    await Source.Open();
+                });
+            }
+        }
+        public ICommand _OnDoubleClick;
+
+        /// <summary>
+        /// 項目ｷｰ入力時ｲﾍﾞﾝﾄ
+        /// </summary>
+        public ICommand OnKeyDown
+        {
+            get
+            {
+                return _OnKeyDown = _OnKeyDown ?? new RelayCommand<KeyEventArgs>(
+                e =>
+                {
+                    switch (e.Key)
+                    {
+                        case Key.Enter:
+                            // ﾀﾞﾌﾞﾙｸﾘｯｸと同じ処理
+                            OnDoubleClick.Execute(null);
+                            break;
+                        case Key.Delete:
+                            OnTemporaryDel.Execute(null);
+                            break;
+                    }
+                });
+            }
+        }
+        public ICommand _OnKeyDown;
+
+        /// <summary>
+        /// 項目をﾃﾝﾎﾟﾗﾘに追加する
+        /// </summary>
+        public ICommand OnTemporaryAdd
+        {
+            get
+            {
+                return _OnTemporaryAdd = _OnTemporaryAdd ?? new RelayCommand(
+                async e =>
+                {
+                    // ﾃﾝﾎﾟﾗﾘに追加
+                    await SearchVideoByTemporaryModel.Instance.AddVideo(Source);
+                });
+            }
+        }
+        public ICommand _OnTemporaryAdd;
+
+        /// <summary>
+        /// 項目をﾃﾝﾎﾟﾗﾘから削除する
+        /// </summary>
+        public ICommand OnTemporaryDel
+        {
+            get
+            {
+                return _OnTemporaryDel = _OnTemporaryDel ?? new RelayCommand(
+                async e =>
+                {
+                    // ﾃﾝﾎﾟﾗﾘから削除
+                    await SearchVideoByTemporaryModel.Instance.DeleteVideo(Source);
+                });
+            }
+        }
+        public ICommand _OnTemporaryDel;
+
+        /// <summary>
+        /// 動画をﾀﾞｳﾝﾛｰﾄﾞする。
+        /// </summary>
+        public ICommand OnDownload
+        {
+            get
+            {
+                return _OnDownload = _OnDownload ?? new RelayCommand(
+                _ =>
+                {
+                    //string result = await MainWindowViewModel.Instance.ShowInputAsync(
+                    //    Resources.L_DOWNLOAD,
+                    //    Resources.L_DOWNLOAD);
+
+                    //await Source.Download(result);
+                    //DownloadModel.Instance.Downloads.Add(Source);
+                });
+            }
+        }
+        public ICommand _OnDownload;
 
     }
 }

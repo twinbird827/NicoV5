@@ -25,15 +25,9 @@ namespace NicoV5.Mvvm.Models
         /// <returns></returns>
         public async Task<CookieContainer> GetCookies()
         {
-            using (var accessor = DbAccessor.GetAccessor())
-            using (var control = accessor.GetCommand())
-            {
-                var settings = await control.GetSetting();
-                var mail = settings.First(s => s.Key == SettingKeys.MailAddress).Value;
-                var password = NicoUtil.DecryptString(settings.First(s => s.Key == SettingKeys.Password).Value);
-                Cookies = Cookies ?? await LoginAsync(mail, password);
-            }
-
+            var mail = SettingModel.Instance.MailAddress;
+            var password = SettingModel.Instance.Password;
+            Cookies = Cookies ?? await LoginAsync(mail, password);
 
             if (Cookies == null)
             {
@@ -41,6 +35,39 @@ namespace NicoV5.Mvvm.Models
             }
 
             return Cookies;
+        }
+
+        /// <summary>
+        /// 指定したﾒｰﾙｱﾄﾞﾚｽ、ﾊﾟｽﾜｰﾄﾞでﾛｸﾞｲﾝできるか確認します。
+        /// </summary>
+        /// <param name="mail">ﾒｰﾙ</param>
+        /// <param name="password">ﾊﾟｽﾜｰﾄﾞ</param>
+        public bool CanLogin(string mail, string password)
+        {
+            bool tmp = false;
+
+            CanLoginAsync(mail, password)
+                .ContinueWith(login => tmp = login.Result);
+
+            return tmp;
+        }
+
+        /// <summary>
+        /// 指定したﾒｰﾙｱﾄﾞﾚｽ、ﾊﾟｽﾜｰﾄﾞでﾛｸﾞｲﾝできるか確認します。
+        /// </summary>
+        /// <param name="mail">ﾒｰﾙ</param>
+        /// <param name="password">ﾊﾟｽﾜｰﾄﾞ</param>
+        public async Task<bool> CanLoginAsync(string mail, string password)
+        {
+            try
+            {
+                var cookies = await LoginAsync(mail, password);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

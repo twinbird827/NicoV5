@@ -4,8 +4,85 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:NicoV5.Mvvm.WorkSpaces"
+             xmlns:Components="clr-namespace:NicoV5.Mvvm.Components"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d">
-    <Grid>
-        
-    </Grid>
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type Components:VideoViewModel}">
+            <Components:VideoWindow />
+        </DataTemplate>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}" />
+
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <StackPanel DockPanel.Dock="Left" Width="100">
+
+            <Controls:Underline Content="MYLIST"/>
+
+            <TextBox Text="{Binding Word}" />
+
+            <Button Content="SEARCH" />
+
+            <Button Content="ADD MYLIST" />
+
+            <Image Source="{Binding UserThumbnail}" />
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="ﾕｰｻﾞID：" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding UserId}" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="ﾕｰｻﾞ名：" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding MylistCreator}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="更新日：" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding MylistDate, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
+
+            </Grid>
+
+            <TextBlock Text="{Binding MylistTitle}" />
+
+        </StackPanel>
+
+        <ListBox ItemsSource="{Binding Videos}"
+                 ItemContainerStyle="{StaticResource VideoWindow.ItemContainerStyle}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.ScrollUnit="Pixel"
+                 HorizontalAlignment="Stretch">
+        </ListBox>
+
+    </DockPanel>
+    
 </UserControl>

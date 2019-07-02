@@ -43,6 +43,9 @@
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="StatefulModel, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\StatefulModel.0.6.0\lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\StatefulModel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.111.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -71,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Mvvm\Components\MailPassWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mvvm\Components\VideoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -86,16 +93,23 @@
     <Compile Include="Common\AppSetting.cs" />
     <Compile Include="Common\Databases\DbAccessor.cs" />
     <Compile Include="Common\Databases\DbCreateExtension.cs" />
+    <Compile Include="Common\Databases\FavoriteExtension.cs" />
     <Compile Include="Common\Databases\SettingExtension.cs" />
-    <Compile Include="Common\Databases\ViewExtension.cs" />
+    <Compile Include="Common\Databases\VideoHistoryExtension.cs" />
     <Compile Include="Common\NicoUtil.cs" />
     <Compile Include="Common\SettingKeys.cs" />
+    <Compile Include="Common\Tables\TFavorite.cs" />
     <Compile Include="Common\Tables\TSetting.cs" />
-    <Compile Include="Common\Tables\TView.cs" />
+    <Compile Include="Common\Tables\TVideoHistory.cs" />
     <Compile Include="Mvvm\Combos\ComboboxItemModel.cs" />
     <Compile Include="Mvvm\Combos\ComboboxModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankGenreModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankPeriodModel.cs" />
+    <Compile Include="Mvvm\Combos\ComboVMylistSortModel.cs" />
+    <Compile Include="Mvvm\Components\MailPassViewModel.cs" />
+    <Compile Include="Mvvm\Components\MailPassWindow.xaml.cs">
+      <DependentUpon>MailPassWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mvvm\Components\VideoViewModel.cs" />
     <Compile Include="Mvvm\Components\VideoWindow.xaml.cs">
       <DependentUpon>VideoWindow.xaml</DependentUpon>
@@ -136,13 +150,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mvvm\Main\MenuType.cs" />
+    <Compile Include="Mvvm\Models\SearchMylistModel.cs" />
+    <Compile Include="Mvvm\Models\SearchVideoByMylistModel.cs" />
     <Compile Include="Mvvm\Models\SearchVideoByRankingModel.cs" />
+    <Compile Include="Mvvm\Models\SearchVideoByTemporaryModel.cs" />
     <Compile Include="Mvvm\Models\SearchVideoModel.cs" />
     <Compile Include="Mvvm\Models\Session.cs" />
     <Compile Include="Mvvm\Models\SettingModel.cs" />
     <Compile Include="Mvvm\Models\VideoModel.cs" />
     <Compile Include="Mvvm\Models\VideoStatus.cs" />
-    <Compile Include="Mvvm\Models\ViewModel.cs" />
+    <Compile Include="Mvvm\Models\SearchVideoByHistoryModel.cs" />
     <Compile Include="Mvvm\Services\WpfMessageService.cs" />
     <Compile Include="Mvvm\Services\WpfMessageType.cs" />
     <Compile Include="Mvvm\Services\WpfMessageViewModel.cs" />

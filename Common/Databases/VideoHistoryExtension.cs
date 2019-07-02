@@ -9,20 +9,20 @@ using WpfUtilV2.Extensions;
 
 namespace NicoV5.Common.Databases
 {
-    public static class ViewExtension
+    public static class VideoHistoryExtension
     {
-        public static async Task<List<TView>> GetView(this IDbControl control)
+        public static async Task<List<TVideoHistory>> GetVideoHistory(this IDbControl control)
         {
-            var results = new List<TView>();
+            var results = new List<TVideoHistory>();
             var sql = new StringBuilder();
             sql.AppendLine($"SELECT id, tick");
-            sql.AppendLine($"FROM   view");
+            sql.AppendLine($"FROM   video_history");
 
             using (var reader = await control.ExecuteReaderAsync(sql.ToString()))
             {
                 while (await reader.ReadAsync())
                 {
-                    results.Add(new TView(
+                    results.Add(new TVideoHistory(
                         reader.GetString(0),    // id
                         reader.GetInt64(1)      // tick
                     ));
@@ -32,7 +32,7 @@ namespace NicoV5.Common.Databases
             return results;
         }
 
-        public static async Task<int> InsertOrReplaceView(this IDbControl control, params TView[] views)
+        public static async Task<int> InsertOrReplaceVideoHistory(this IDbControl control, params TVideoHistory[] views)
         {
             var columns = new[] { "id", "tick" };
 
@@ -42,7 +42,7 @@ namespace NicoV5.Common.Databases
             {
                 var sql = new StringBuilder();
 
-                sql.AppendLine($"INSERT OR REPLACE INTO setting (");
+                sql.AppendLine($"INSERT OR REPLACE INTO video_history (");
                 sql.AppendLine(columns.GetString(","));
                 sql.AppendLine(")");
                 sql.AppendLine(

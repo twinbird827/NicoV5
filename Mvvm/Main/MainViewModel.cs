@@ -75,7 +75,10 @@ namespace NicoV5.Mvvm.Main
                     SettingModel.Initialize(await control.GetSetting());
 
                     // ViewModelの初期化
-                    ViewModel.Initialize(await control.GetView());
+                    SearchVideoByHistoryModel.Initialize(await control.GetVideoHistory());
+
+                    // Temporaryの初期化
+                    await SearchVideoByTemporaryModel.Initialize();
                 }
             });
 

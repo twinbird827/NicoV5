@@ -9,9 +9,9 @@ using WpfUtilV2.Mvvm;
 
 namespace NicoV5.Mvvm.Models
 {
-    public class ViewModel : BindableBase
+    public class SearchVideoByHistoryModel : BindableBase
     {
-        private ViewModel()
+        private SearchVideoByHistoryModel()
         {
 
         }
@@ -19,30 +19,30 @@ namespace NicoV5.Mvvm.Models
         /// <summary>
         /// ｼﾝｸﾞﾙﾄﾝﾊﾟﾀｰﾝ
         /// </summary>
-        public static ViewModel Instance { get; private set; }
+        public static SearchVideoByHistoryModel Instance { get; private set; }
 
         /// <summary>
         /// 内部保持情報
         /// </summary>
-        private List<TView> Views { get; set; }
+        private List<TVideoHistory> Histories { get; set; }
 
         /// <summary>
         /// SettingModelを初期化します。
         /// </summary>
         /// <param name="views"></param>
-        public static void Initialize(List<TView> views)
+        public static void Initialize(List<TVideoHistory> views)
         {
-            Instance = new ViewModel();
-            Instance.Views = views;
+            Instance = new SearchVideoByHistoryModel();
+            Instance.Histories = views;
         }
 
         /// <summary>
         /// Viewを追加します。
         /// </summary>
         /// <param name="id">video_id</param>
-        public Task AddView(string id)
+        public Task AddHistory(string id)
         {
-            return AddView(id, DateTime.Now);
+            return AddHistory(id, DateTime.Now);
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace NicoV5.Mvvm.Models
         /// </summary>
         /// <param name="id">video_id</param>
         /// <param name="tick">追加日</param>
-        public Task AddView(string id, long tick)
+        public Task AddHistory(string id, long tick)
         {
-            return AddView(id, new DateTime(tick));
+            return AddHistory(id, new DateTime(tick));
         }
 
         /// <summary>
@@ -60,24 +60,24 @@ namespace NicoV5.Mvvm.Models
         /// </summary>
         /// <param name="id">video_id</param>
         /// <param name="date">追加日</param>
-        public Task AddView(string id, DateTime date)
+        public Task AddHistory(string id, DateTime date)
         {
-            return AddView(new TView(id, date));
+            return AddHistory(new TVideoHistory(id, date));
         }
 
         /// <summary>
         /// Viewを追加します。
         /// </summary>
         /// <param name="view">view</param>
-        public async Task AddView(TView view)
+        public async Task AddHistory(TVideoHistory view)
         {
-            Views.Add(view);
+            Histories.Add(view);
 
             using (var accessor = DbAccessor.GetAccessor())
             using (var control = accessor.GetCommand())
             {
                 await control.BeginTransaction();
-                await control.InsertOrReplaceView(view);
+                await control.InsertOrReplaceVideoHistory(view);
                 await control.Commit();
             }
         }
@@ -88,7 +88,7 @@ namespace NicoV5.Mvvm.Models
         /// <param name="id">video_id</param>
         public bool IsSee(string id)
         {
-            return Views.Any(v => v.VideoId == id);
+            return Histories.Any(v => v.VideoId == id);
         }
     }
 }

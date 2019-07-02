@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace NicoV5.Common.Tables
 {
-    public class TView
+    public class TVideoHistory
     {
-        public TView(string id, long tick)
+        public TVideoHistory(string id, long tick)
         {
             VideoId = id;
             Tick = tick;
         }
 
-        public TView(string id, DateTime date)
+        public TVideoHistory(string id, DateTime date)
         {
             VideoId = id;
             Date = date;

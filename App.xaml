@@ -112,6 +112,25 @@
                 </Setter>
             </Style>
 
+            <!--
+                VideoItemsWindow定義
+            -->
+            <Style x:Key="SearchVideoByTemporaryWindow.VideoWindow.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}">
+                <Setter Property="Behaviors:ControlMouseDoubleClickBehavior.Command" Value="{Binding OnDoubleClick}" />
+                <Setter Property="Behaviors:ControlKeyDownBehavior.Command" Value="{Binding OnKeyDown}" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="削除" 
+                                          Command="{Binding OnTemporaryDel}" />
+                            <MenuItem Header="ﾀﾞｳﾝﾛｰﾄﾞ" 
+                                          Command="{Binding OnDownload}" />
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

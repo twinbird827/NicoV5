@@ -4,8 +4,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:NicoV5.Mvvm.WorkSpaces"
+             xmlns:Components="clr-namespace:NicoV5.Mvvm.Components"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d">
-    <Grid>
-        
-    </Grid>
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type Components:VideoViewModel}">
+            <Components:VideoWindow />
+        </DataTemplate>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}" />
+
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <StackPanel DockPanel.Dock="Left" Width="100">
+
+            <Button Content="REFLESH" />
+            <Button Content="ADD" />
+            <Button Content="DELETE" />
+
+        </StackPanel>
+
+        <ListBox ItemsSource="{Binding Videos}"
+                 ItemContainerStyle="{StaticResource SearchVideoByTemporaryWindow.VideoWindow.ItemContainerStyle}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.ScrollUnit="Pixel"
+                 HorizontalAlignment="Stretch">
+        </ListBox>
+
+    </DockPanel>
+    
 </UserControl>

@@ -19,7 +19,7 @@ namespace NicoV5.Common.Databases
             await control.InitializeSetting();
 
             // 視聴ﾃｰﾌﾞﾙの作成
-            await control.CreateView();
+            await control.CreateVideoHistory();
         }
 
         private static async Task CreateSetting(this IDbControl control)
@@ -35,14 +35,27 @@ namespace NicoV5.Common.Databases
             await control.ExecuteNonQueryAsync(sql.ToString());
         }
 
-        private static async Task CreateView(this IDbControl control)
+        private static async Task CreateVideoHistory(this IDbControl control)
         {
             var sql = new StringBuilder();
 
-            sql.AppendLine($"CREATE TABLE IF NOT EXISTS view (");
+            sql.AppendLine($"CREATE TABLE IF NOT EXISTS video_history (");
             sql.AppendLine($"    id   TEXT    NOT NULL,");
             sql.AppendLine($"    tick INTEGER NOT NULL,");
             sql.AppendLine($"PRIMARY KEY (id, tick)");
+            sql.AppendLine($")");
+
+            await control.ExecuteNonQueryAsync(sql.ToString());
+        }
+
+        private static async Task CreateFavorite(this IDbControl control)
+        {
+            var sql = new StringBuilder();
+
+            sql.AppendLine($"CREATE TABLE IF NOT EXISTS favorite (");
+            sql.AppendLine($"    id   TEXT    NOT NULL,");
+            sql.AppendLine($"    tick INTEGER NOT NULL,");
+            sql.AppendLine($"PRIMARY KEY (id)");
             sql.AppendLine($")");
 
             await control.ExecuteNonQueryAsync(sql.ToString());
