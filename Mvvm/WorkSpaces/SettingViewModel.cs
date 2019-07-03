@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfUtilV2.Mvvm;
+using WpfUtilV2.Mvvm.Service;
 
 namespace NicoV5.Mvvm.WorkSpaces
 {
@@ -57,12 +58,20 @@ namespace NicoV5.Mvvm.WorkSpaces
         {
             get
             {
-                return _OnClickLogin = _OnClickLogin ?? new RelayCommand(
-                async _ => 
+                return _OnClickLogin = _OnClickLogin ?? new RelayCommand(async _ => 
                 {
                     using (var accessor = DbAccessor.GetAccessor())
                     using (var control = accessor.GetCommand())
                     {
+                        if (!Session.Instance.CanLogin(MailAddress, Password))
+                        {
+                            ServiceFactory.MessageService.Error("入力したﾒｰﾙｱﾄﾞﾚｽ、ﾊﾟｽﾜｰﾄﾞではﾛｸﾞｲﾝできません。");
+                            return;
+                        }
+
+                        SettingModel.Instance.MailAddress = MailAddress;
+                        SettingModel.Instance.Password = Password;
+
                         await control.BeginTransaction();
                         await control.InsertOrReplaceSetting(
                             new TSetting(SettingKeys.MailAddress, MailAddress),

@@ -23,6 +23,10 @@ namespace NicoV5.Common.Databases
                 new TSetting(SettingKeys.MailAddress, ""),
                 new TSetting(SettingKeys.Password, ""),
                 new TSetting(SettingKeys.Browser, @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
+                new TSetting(SettingKeys.ComboHistorySort, "0"),
+                new TSetting(SettingKeys.ComboRankGenre, "0"),
+                new TSetting(SettingKeys.ComboRankPeriod, "0"),
+                new TSetting(SettingKeys.ComboVMylistSort, "0"),
             };
 
             // 結合する
@@ -36,7 +40,7 @@ namespace NicoV5.Common.Databases
 
         public static async Task<int> InsertOrReplaceSetting(this IDbControl control, params TSetting[] settings)
         {
-            var columns = new[] { "key", "value" };
+            var columns = new[] { "key", "value", "description" };
 
             int result = 0;
 
@@ -49,7 +53,7 @@ namespace NicoV5.Common.Databases
                 sql.AppendLine(")");
                 sql.AppendLine(
                     chunk
-                        .Select(data => $"SELECT {(int)data.Key}, '{data.Value}'")
+                        .Select(data => $"SELECT {(int)data.Key}, '{data.Value}', '{data.Description}'")
                         .GetString(" UNION ALL ")
                 );
 

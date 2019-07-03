@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>NicoV5.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
@@ -78,6 +81,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Mvvm\Components\MylistWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mvvm\Components\VideoHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mvvm\Components\VideoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,14 +112,24 @@
     <Compile Include="Common\Tables\TFavorite.cs" />
     <Compile Include="Common\Tables\TSetting.cs" />
     <Compile Include="Common\Tables\TVideoHistory.cs" />
+    <Compile Include="Common\Tables\VVideoHistory.cs" />
     <Compile Include="Mvvm\Combos\ComboboxItemModel.cs" />
     <Compile Include="Mvvm\Combos\ComboboxModel.cs" />
+    <Compile Include="Mvvm\Combos\ComboHistorySortModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankGenreModel.cs" />
     <Compile Include="Mvvm\Combos\ComboRankPeriodModel.cs" />
     <Compile Include="Mvvm\Combos\ComboVMylistSortModel.cs" />
     <Compile Include="Mvvm\Components\MailPassViewModel.cs" />
     <Compile Include="Mvvm\Components\MailPassWindow.xaml.cs">
       <DependentUpon>MailPassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mvvm\Components\MylistViewModel.cs" />
+    <Compile Include="Mvvm\Components\MylistWindow.xaml.cs">
+      <DependentUpon>MylistWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mvvm\Components\VideoHistoryViewModel.cs" />
+    <Compile Include="Mvvm\Components\VideoHistoryWindow.xaml.cs">
+      <DependentUpon>VideoHistoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mvvm\Components\VideoViewModel.cs" />
     <Compile Include="Mvvm\Components\VideoWindow.xaml.cs">
@@ -124,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Mvvm\WorkSpaces\SearchMylistWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mvvm\WorkSpaces\SearchVideoByHistoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,6 +194,10 @@
     <Compile Include="Mvvm\WorkSpaces\SearchMylistViewModel.cs" />
     <Compile Include="Mvvm\WorkSpaces\SearchMylistWindow.xaml.cs">
       <DependentUpon>SearchMylistWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mvvm\WorkSpaces\SearchVideoByHistoryViewModel.cs" />
+    <Compile Include="Mvvm\WorkSpaces\SearchVideoByHistoryWindow.xaml.cs">
+      <DependentUpon>SearchVideoByHistoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mvvm\WorkSpaces\SearchVideoByMylistViewModel.cs" />
     <Compile Include="Mvvm\WorkSpaces\SearchVideoByMylistWindow.xaml.cs">
@@ -216,7 +245,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="NicoV5.ico" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WpfUtilV2\WpfUtilV2.csproj">
       <Project>{12AB67DB-0B63-4EB2-8EFE-BD496A1B2CC6}</Project>

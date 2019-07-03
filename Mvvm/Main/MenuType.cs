@@ -10,6 +10,14 @@ namespace NicoV5.Mvvm.Main
     {
         SearchByRanking,
 
+        SearchByTemporary,
+
+        SearchByHistory,
+
+        SearchByMylist,
+
+        SearchMylist,
+
         Setting,
     }
 }

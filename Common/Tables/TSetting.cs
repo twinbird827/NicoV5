@@ -8,15 +8,23 @@ namespace NicoV5.Common.Tables
 {
     public class TSetting
     {
-        public TSetting(SettingKeys key, string value)
+        public TSetting(SettingKeys key, string value) : this(key, value, key.ToString())
+        {
+
+        }
+
+        public TSetting(SettingKeys key, string value, string description)
         {
             Key = key;
             Value = value;
+            Description = description;
         }
 
         public SettingKeys Key { get; set; }
 
         public string Value { get; set; }
+
+        public string Description { get; set; }
 
         public override bool Equals(object obj)
         {

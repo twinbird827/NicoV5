@@ -10,8 +10,8 @@
                       ResizeMode="NoResize"
                       SizeToContent="WidthAndHeight"
                       WindowStartupLocation="Manual"
-                      behavior:WindowRequestCloseBehavior.DialogResult="{Binding DialogResult}"
                       behavior:WindowAdjustmentPositionWhenLoadedBehavior.IsEnabled="True"
+                      behavior:WindowRequestCloseBehavior.DialogResult="{Binding DialogResult}"
                       Title="ｱｶｳﾝﾄ入力">
     <Controls:MetroWindow.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />

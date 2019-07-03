@@ -15,6 +15,10 @@
         </DataTemplate>
 
         <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}" />
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" />
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}" />
+        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />
+        <Style TargetType="Image" BasedOn="{StaticResource DefaultImage}" />
 
     </UserControl.Resources>
 
@@ -24,54 +28,64 @@
 
             <Controls:Underline Content="MYLIST"/>
 
+            <ComboBox DataContext="{Binding Sort}" />
+            
             <TextBox Text="{Binding Word}" />
 
-            <Button Content="SEARCH" />
+            <Button Content="SEARCH"
+                    Command="{Binding OnSearch}" />
 
-            <Button Content="ADD MYLIST" />
+            <Button Content="ADD MYLIST" 
+                    Command="{Binding OnAdd}" />
 
-            <Image Source="{Binding UserThumbnail}" />
 
-            <Grid>
+            <DockPanel Visibility="{Binding IsCreatorVisible, Converter={StaticResource Boolean2VisibilityCollapsedConverter}}">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+                <Image DockPanel.Dock="Top"
+                       Source="{Binding UserThumbnail}" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Grid DockPanel.Dock="Top">
 
-                <TextBlock Grid.Row="0"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Text="ﾕｰｻﾞID：" />
 
-                <TextBlock Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                            Grid.Column="1"
                            Text="{Binding UserId}" />
 
-                <TextBlock Grid.Row="1"
+                    <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Text="ﾕｰｻﾞ名：" />
 
-                <TextBlock Grid.Row="1"
+                    <TextBlock Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding MylistCreator}" />
 
-                <TextBlock Grid.Row="2"
+                    <TextBlock Grid.Row="2"
                            Grid.Column="0"
                            Text="更新日：" />
 
-                <TextBlock Grid.Row="2"
+                    <TextBlock Grid.Row="2"
                            Grid.Column="1"
                            Text="{Binding MylistDate, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
 
-            </Grid>
+                </Grid>
 
-            <TextBlock Text="{Binding MylistTitle}" />
+                <TextBlock Text="{Binding MylistTitle}" />
+
+            </DockPanel>
 
         </StackPanel>
 

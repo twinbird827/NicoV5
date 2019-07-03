@@ -132,7 +132,7 @@ namespace NicoV5.Mvvm.Components
         /// <summary>
         /// 項目ﾀﾞﾌﾞﾙｸﾘｯｸ時ｲﾍﾞﾝﾄ
         /// </summary>
-        public ICommand OnDoubleClick
+        public virtual ICommand OnDoubleClick
         {
             get
             {
@@ -144,7 +144,7 @@ namespace NicoV5.Mvvm.Components
                 });
             }
         }
-        public ICommand _OnDoubleClick;
+        private ICommand _OnDoubleClick;
 
         /// <summary>
         /// 項目ｷｰ入力時ｲﾍﾞﾝﾄ
@@ -169,7 +169,7 @@ namespace NicoV5.Mvvm.Components
                 });
             }
         }
-        public ICommand _OnKeyDown;
+        private ICommand _OnKeyDown;
 
         /// <summary>
         /// 項目をﾃﾝﾎﾟﾗﾘに追加する
@@ -186,7 +186,7 @@ namespace NicoV5.Mvvm.Components
                 });
             }
         }
-        public ICommand _OnTemporaryAdd;
+        private ICommand _OnTemporaryAdd;
 
         /// <summary>
         /// 項目をﾃﾝﾎﾟﾗﾘから削除する
@@ -203,7 +203,7 @@ namespace NicoV5.Mvvm.Components
                 });
             }
         }
-        public ICommand _OnTemporaryDel;
+        private ICommand _OnTemporaryDel;
 
         /// <summary>
         /// 動画をﾀﾞｳﾝﾛｰﾄﾞする。
@@ -224,7 +224,7 @@ namespace NicoV5.Mvvm.Components
                 });
             }
         }
-        public ICommand _OnDownload;
+        private ICommand _OnDownload;
 
     }
 }

@@ -41,7 +41,7 @@ namespace NicoV5.Mvvm.Models
         /// 設定情報を取得します。
         /// </summary>
         /// <param name="key">取得するｷｰ</param>
-        private string GetSetting(SettingKeys key)
+        public string GetSetting(SettingKeys key)
         {
             return Settings?.FirstOrDefault(s => s.Key == key)?.Value;
         }

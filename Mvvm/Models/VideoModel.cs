@@ -1,4 +1,5 @@
 ﻿using NicoV5.Common;
+using NicoV5.Common.Tables;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -230,6 +231,26 @@ namespace NicoV5.Mvvm.Models
 
             // ｽﾃｰﾀｽ変更
             Status = VideoStatus.See;
+        }
+
+        public static async Task<VideoModel> CreateInstance(VVideoHistory vvh)
+        {
+            var v = await CreateInstance(vvh.VideoId);
+
+            v.StartTime = vvh.Date;
+
+            return v;
+        }
+
+        public static async Task<VideoModel> CreateInstance(string id)
+        {
+            await Task.Delay(1);
+
+            var v = new VideoModel();
+
+            v.VideoUrl = id;
+
+            return v;
         }
 
         //public async Task Download(string path)

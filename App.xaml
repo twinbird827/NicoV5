@@ -131,6 +131,24 @@
                 </Setter>
             </Style>
 
+            <!--
+                VideoItemsWindow定義
+            -->
+            <Style x:Key="MylistWindow.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}">
+                <Setter Property="Behaviors:ControlMouseDoubleClickBehavior.Command" Value="{Binding OnDoubleClick}" />
+                <Setter Property="Behaviors:ControlKeyDownBehavior.Command" Value="{Binding OnKeyDown}" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="削除" 
+                                      Command="{Binding OnFavoriteDel}" />
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

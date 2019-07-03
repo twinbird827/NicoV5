@@ -1,7 +1,6 @@
-﻿using NicoV5.Mvvm.Combos;
-using NicoV5.Mvvm.Components;
+﻿using NicoV5.Mvvm.Main;
 using NicoV5.Mvvm.Models;
-using StatefulModel;
+using NicoV5.Mvvm.WorkSpaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +10,26 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfUtilV2.Mvvm;
 
-namespace NicoV5.Mvvm.WorkSpaces
+namespace NicoV5.Mvvm.Components
 {
-    public class SearchVideoByMylistViewModel : WorkSpaceViewModel
+    public class MylistViewModel : BindableBase
     {
-        public SearchVideoByMylistViewModel() : this(new SearchVideoByMylistModel())
-        {
-
-        }
-
-        public SearchVideoByMylistViewModel(SearchVideoByMylistModel source)
+        public MylistViewModel(SearchVideoByMylistModel source)
         {
             Source = source;
-
-            Sort = ComboVMylistSortModel.Instance;
-
-            Videos = Source.Videos.ToSyncedSynchronizationContextCollection(
-                video => new VideoViewModel(video),
-                AnonymousSynchronizationContext.Current
-            );
-            if (!string.IsNullOrEmpty(Source.MylistUrl))
-            {
-                Word = Source.MylistUrl;
-            }
-            MylistTitle = Source.MylistTitle;
-            MylistCreator = Source.MylistCreator;
-            MylistDescription = Source.MylistDescription;
-            UserId = Source.UserId;
-            UserThumbnail = Source.UserThumbnail;
-            MylistDate = Source.MylistDate;
+            // 初期値設定
+            MylistTitle = MylistTitle;
+            MylistCreator = MylistCreator;
+            MylistDescription = MylistDescription;
+            UserId = UserId;
+            UserThumbnail = UserThumbnail;
+            MylistDate = MylistDate;
 
             // ﾓﾃﾞﾙ側で変更があったら通知する
             Source.AddOnPropertyChanged(this, (sender, e) =>
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(Source.MylistUrl):
-                        Word = source.MylistUrl;
-                        break;
                     case nameof(MylistTitle):
                         MylistTitle = Source.MylistTitle;
                         break;
@@ -69,34 +50,10 @@ namespace NicoV5.Mvvm.WorkSpaces
                         break;
                 }
             });
+
         }
 
-        public SearchVideoByMylistModel Source { get; private set; }
-
-        /// <summary>
-        /// ﾒｲﾝ項目ﾘｽﾄ
-        /// </summary>
-        public SynchronizationContextCollection<VideoViewModel> Videos
-        {
-            get { return _Videos; }
-            set { SetProperty(ref _Videos, value); }
-        }
-        private SynchronizationContextCollection<VideoViewModel> _Videos;
-
-        /// <summary>
-        /// ｼﾞｬﾝﾙ
-        /// </summary>
-        public ComboVMylistSortModel Sort { get; set; }
-
-        /// <summary>
-        /// 検索ﾜｰﾄﾞ
-        /// </summary>
-        public string Word
-        {
-            get { return _Word; }
-            set { SetProperty(ref _Word, value); }
-        }
-        private string _Word = null;
+        public SearchVideoByMylistModel Source { get; set; }
 
         /// <summary>
         /// ﾀｲﾄﾙ
@@ -146,7 +103,7 @@ namespace NicoV5.Mvvm.WorkSpaces
             get { return _UserThumbnail; }
             set { SetProperty(ref _UserThumbnail, value); }
         }
-        private BitmapImage _UserThumbnail = null;
+        private BitmapImage _UserThumbnail;
 
         /// <summary>
         /// 更新日時
@@ -159,54 +116,69 @@ namespace NicoV5.Mvvm.WorkSpaces
         private DateTime _MylistDate = default(DateTime);
 
         /// <summary>
-        /// 作成者情報を表示するか
+        /// 項目ﾀﾞﾌﾞﾙｸﾘｯｸ時ｲﾍﾞﾝﾄ
         /// </summary>
-        public bool IsCreatorVisible => Videos.Any();
-
-        /// <summary>
-        /// 検索処理
-        /// </summary>
-        public ICommand OnSearch
+        public ICommand OnDoubleClick
         {
             get
             {
-                return _OnSearch = _OnSearch ?? new RelayCommand(async _ =>
+                return _OnDoubleClick = _OnDoubleClick ?? new RelayCommand(
+                _ =>
                 {
-                    // 入力値をﾓﾃﾞﾙにｾｯﾄ
-                    Source.MylistUrl = this.Word;
-                    Source.OrderBy = Sort.SelectedItem.Value;
+                    // 検索画面を出す
+                    var vm = new SearchVideoByMylistViewModel();
 
-                    // 検索実行
-                    await Source.Reload();
+                    vm.Word = Source.MylistUrl;
+                    vm.OnSearch.Execute(null);
 
-                    // ｵｰﾅｰ情報を表示するかどうか
-                    OnPropertyChanged(nameof(IsCreatorVisible));
-                },
-                _ => {
-                    return !string.IsNullOrWhiteSpace(Word);
+                    MainViewModel.Instance.Current = vm;
                 });
             }
         }
-        public ICommand _OnSearch;
+        public ICommand _OnDoubleClick;
 
         /// <summary>
-        /// 追加処理
+        /// ﾏｲﾘｽﾄ削除ｲﾍﾞﾝﾄ
         /// </summary>
-        public ICommand OnAdd
+        public ICommand OnFavoriteDel
         {
             get
             {
-                return _OnAdd = _OnAdd ?? new RelayCommand(
+                return _OnFavoriteDel = _OnFavoriteDel ?? new RelayCommand(
                 async _ =>
                 {
-                    await SearchMylistModel.Instance.AddFavorite(Source.MylistId);
-                },
-                _ => {
-                    return IsCreatorVisible;
+                    // ﾏｲﾘｽﾄ削除
+                    await SearchMylistModel.Instance.RemoveFavorite(Source.MylistId);
                 });
             }
         }
-        public ICommand _OnAdd;
+        public ICommand _OnFavoriteDel;
+
+        /// <summary>
+        /// 項目ｷｰ入力時ｲﾍﾞﾝﾄ
+        /// </summary>
+        public ICommand OnKeyDown
+        {
+            get
+            {
+                return _OnKeyDown = _OnKeyDown ?? new RelayCommand<KeyEventArgs>(
+                e =>
+                {
+                    switch (e.Key)
+                    {
+                        case Key.Enter:
+                            // ﾀﾞﾌﾞﾙｸﾘｯｸと同じ処理
+                            OnDoubleClick.Execute(null);
+                            break;
+                        case Key.Delete:
+                            // ﾏｲﾘｽﾄ削除
+                            OnFavoriteDel.Execute(null);
+                            break;
+                    }
+                });
+            }
+        }
+        public ICommand _OnKeyDown;
 
     }
 }

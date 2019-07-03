@@ -32,6 +32,32 @@ namespace NicoV5.Common.Databases
             return results;
         }
 
+        public static async Task<List<VVideoHistory>> GetVideoHistoryView(this IDbControl control, int order)
+        {
+            var results = new List<VVideoHistory>();
+            var sql = new StringBuilder();
+            sql.AppendLine($"SELECT id, tick, count");
+            sql.AppendLine($"FROM (");
+            sql.AppendLine($"    SELECT id, max(tick) tick, count(id) count");
+            sql.AppendLine($"    FROM   video_history");
+            sql.AppendLine($")");
+            sql.AppendLine($"ORDER BY {order} desc");
+
+            using (var reader = await control.ExecuteReaderAsync(sql.ToString()))
+            {
+                while (await reader.ReadAsync())
+                {
+                    results.Add(new VVideoHistory(
+                        reader.GetString(0),    // id
+                        reader.GetInt64(1),     // tick
+                        reader.GetInt32(2)      // count
+                    ));
+                }
+            }
+
+            return results;
+        }
+
         public static async Task<int> InsertOrReplaceVideoHistory(this IDbControl control, params TVideoHistory[] views)
         {
             var columns = new[] { "id", "tick" };

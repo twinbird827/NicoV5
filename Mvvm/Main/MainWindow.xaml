@@ -43,13 +43,29 @@
         <StackPanel DockPanel.Dock="Left"
                     Orientation="Vertical">
 
-            <Button Content="ｵﾌﾟｼｮﾝ"
+            <Button Content="OPTION"
                     Command="{Binding OnClickMenu}"
                     CommandParameter="{x:Static local:MenuType.Setting}" />
 
-            <Button Content="ﾗﾝｷﾝｸﾞ"
+            <Button Content="RANKING"
                     Command="{Binding OnClickMenu}"
                     CommandParameter="{x:Static local:MenuType.SearchByRanking}" />
+
+            <Button Content="TEMPORARY"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchByTemporary}" />
+
+            <Button Content="HISTORY"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchByHistory}" />
+
+            <Button Content="MYLIST SEARCH"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchByMylist}" />
+
+            <Button Content="MYLIST FAVORITE"
+                    Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchMylist}" />
 
         </StackPanel>
 

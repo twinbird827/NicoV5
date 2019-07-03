@@ -39,7 +39,6 @@ namespace NicoV5.Mvvm.Combos
                 new ComboboxItemModel() { Value = "other", Description = "その他" },
                 new ComboboxItemModel() { Value = "r18", Description = "R-18" },
             };
-            SelectedItem = Items.First();
         }
 
     }

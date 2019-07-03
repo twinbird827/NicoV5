@@ -205,6 +205,18 @@ namespace NicoV5.Mvvm.Main
                 case MenuType.SearchByRanking:
                     Current = new SearchVideoByRankingViewModel();
                     break;
+                case MenuType.SearchByTemporary:
+                    Current = new SearchVideoByTemporaryViewModel();
+                    break;
+                case MenuType.SearchByHistory:
+                    Current = new SearchVideoByHistoryViewModel();
+                    break;
+                case MenuType.SearchByMylist:
+                    Current = new SearchVideoByMylistViewModel();
+                    break;
+                case MenuType.SearchMylist:
+                    Current = new SearchMylistViewModel();
+                    break;
                 case MenuType.Setting:
                     Current = new SettingViewModel();
                     break;

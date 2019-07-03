@@ -37,7 +37,6 @@ namespace NicoV5.Mvvm.Combos
                 new ComboboxItemModel() { Value = "16", Description = "SORT_LENGTH0" },
                 new ComboboxItemModel() { Value = "17", Description = "SORT_LENGTH1" },
             };
-            SelectedItem = Items.First();
         }
     }
 }

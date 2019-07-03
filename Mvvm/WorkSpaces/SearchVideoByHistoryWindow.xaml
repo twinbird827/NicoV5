@@ -1,8 +1,8 @@
-﻿<UserControl x:Class="NicoV5.Mvvm.WorkSpaces.SearchMylistWindow"
+﻿<UserControl x:Class="NicoV5.Mvvm.WorkSpaces.SearchVideoByHistoryWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NicoV5.Mvvm.WorkSpaces"
              xmlns:Components="clr-namespace:NicoV5.Mvvm.Components"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -10,10 +10,11 @@
 
     <UserControl.Resources>
 
-        <DataTemplate DataType="{x:Type Components:MylistViewModel}">
-            <Components:MylistWindow />
+        <DataTemplate DataType="{x:Type Components:VideoHistoryViewModel}">
+            <Components:VideoHistoryWindow />
         </DataTemplate>
 
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}" />
         <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" />
 
     </UserControl.Resources>
@@ -22,15 +23,16 @@
 
         <StackPanel DockPanel.Dock="Left" Width="100">
 
+            <Controls:Underline Content="Order By"/>
+
+            <ComboBox DataContext="{Binding Sort}" />
+
             <Button Content="REFLESH" />
-            
-            <Button Content="ADD" 
-                    Command="{Binding OnFavoriteAdd}" />
 
         </StackPanel>
 
-        <ListBox ItemsSource="{Binding Mylists}"
-                 ItemContainerStyle="{StaticResource MylistWindow.ItemContainerStyle}"
+        <ListBox ItemsSource="{Binding Videos}"
+                 ItemContainerStyle="{StaticResource VideoWindow.ItemContainerStyle}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.CanContentScroll="True"
                  VirtualizingPanel.ScrollUnit="Pixel"
@@ -38,4 +40,5 @@
         </ListBox>
 
     </DockPanel>
+
 </UserControl>

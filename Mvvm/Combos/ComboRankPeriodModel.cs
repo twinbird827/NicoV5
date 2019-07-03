@@ -25,7 +25,6 @@ namespace NicoV5.Mvvm.Combos
                 new ComboboxItemModel() { Value = "monthly", Description = "monthly" },
                 new ComboboxItemModel() { Value = "total",   Description = "total" },
             };
-            SelectedItem = Items.First();
         }
     }
 }

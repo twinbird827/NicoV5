@@ -12,6 +12,14 @@ namespace NicoV5.Common
 
         Password,
 
-        Browser
+        Browser,
+
+        ComboHistorySort,
+
+        ComboRankGenre,
+
+        ComboRankPeriod,
+
+        ComboVMylistSort
     }
 }

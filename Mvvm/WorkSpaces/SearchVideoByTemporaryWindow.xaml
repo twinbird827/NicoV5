@@ -14,7 +14,7 @@
             <Components:VideoWindow />
         </DataTemplate>
 
-        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}" />
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" />
 
     </UserControl.Resources>
 
@@ -23,7 +23,10 @@
         <StackPanel DockPanel.Dock="Left" Width="100">
 
             <Button Content="REFLESH" />
-            <Button Content="ADD" />
+
+            <Button Content="ADD" 
+                    Command="{Binding OnTemporaryAdd}" />
+            
             <Button Content="DELETE" />
 
         </StackPanel>

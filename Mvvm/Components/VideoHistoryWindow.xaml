@@ -1,23 +1,29 @@
-﻿<UserControl x:Class="NicoV5.Mvvm.Components.VideoWindow"
+﻿<UserControl x:Class="NicoV5.Mvvm.Components.VideoHistoryWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NicoV5.Mvvm.Components"
              mc:Ignorable="d">
-    
+
     <UserControl.Resources>
         <Style TargetType="Image" BasedOn="{StaticResource DefaultImage}" />
+        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />
     </UserControl.Resources>
-    
+
     <DockPanel>
 
         <DockPanel DockPanel.Dock="Left">
 
             <DockPanel DockPanel.Dock="Bottom">
 
-                <TextBlock DockPanel.Dock="Left"
-                           Text="{Binding Status}" />
+                <StackPanel DockPanel.Dock="Left"
+                            Orientation="Horizontal">
+
+                    <TextBlock Text="{Binding Count}" />
+                    <TextBlock Text=" 回視聴" />
+
+                </StackPanel>
 
                 <TextBlock Text="{Binding LengthSeconds}" />
 
@@ -59,5 +65,5 @@
                    TextAlignment="Left" />
 
     </DockPanel>
-    
+
 </UserControl>
