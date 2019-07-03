@@ -8,6 +8,7 @@
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />
+        <Style TargetType="Image" BasedOn="{StaticResource DefaultImage}" />
     </UserControl.Resources>
     
     <DockPanel>

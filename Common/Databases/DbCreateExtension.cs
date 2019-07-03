@@ -20,6 +20,9 @@ namespace NicoV5.Common.Databases
 
             // 視聴ﾃｰﾌﾞﾙの作成
             await control.CreateVideoHistory();
+
+            // お気に入りﾃｰﾌﾞﾙの作成
+            await control.CreateFavorite();
         }
 
         private static async Task CreateSetting(this IDbControl control)
@@ -27,8 +30,9 @@ namespace NicoV5.Common.Databases
             var sql = new StringBuilder();
 
             sql.AppendLine($"CREATE TABLE IF NOT EXISTS setting (");
-            sql.AppendLine($"    key   INTEGER NOT NULL,");
-            sql.AppendLine($"    value TEXT    NOT NULL,");
+            sql.AppendLine($"    key         INTEGER NOT NULL,");
+            sql.AppendLine($"    value       TEXT    NOT NULL,");
+            sql.AppendLine($"    description TEXT    NOT NULL,");
             sql.AppendLine($"PRIMARY KEY (key)");
             sql.AppendLine($")");
 

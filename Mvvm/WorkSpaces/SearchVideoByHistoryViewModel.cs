@@ -17,7 +17,11 @@ namespace NicoV5.Mvvm.WorkSpaces
         {
             Videos = new ObservableCollection<VideoHistoryViewModel>();
 
-            Loaded += async (sender, e) => await Reload(sender, e);
+            Sort = ComboHistorySortModel.Instance;
+
+            Loaded += Reload;
+
+            Disposed += (sender, e) => Loaded -= Reload;
         }
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace NicoV5.Mvvm.WorkSpaces
         /// <summary>
         /// 再表示処理
         /// </summary>
-        private async Task Reload(object sender, EventArgs e)
+        private async void Reload(object sender, EventArgs e)
         {
             Videos.Clear();
             using (var accessor = DbAccessor.GetAccessor())
@@ -46,7 +50,7 @@ namespace NicoV5.Mvvm.WorkSpaces
             {
                 foreach (var vvh in await control.GetVideoHistoryView(int.Parse(Sort.SelectedItem.Value)))
                 {
-                    Videos.Add(new VideoHistoryViewModel(await VideoModel.CreateInstance(vvh), vvh.Count));
+                    Videos.Add(new VideoHistoryViewModel(VideoModel.CreateInstance(vvh), vvh.Count));
                 }
             }
         }

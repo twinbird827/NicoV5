@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NicoV5.Common;
 using WpfUtilV2.Mvvm;
 
 namespace NicoV5.Mvvm.Combos
@@ -14,6 +15,8 @@ namespace NicoV5.Mvvm.Combos
         /// ｲﾝｽﾀﾝｽ (ｼﾝｸﾞﾙﾄﾝﾊﾟﾀｰﾝ)
         /// </summary>
         public static ComboRankPeriodModel Instance { get; } = new ComboRankPeriodModel();
+
+        public override SettingKeys Key => SettingKeys.ComboRankPeriod;
 
         private ComboRankPeriodModel()
         {

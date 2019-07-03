@@ -201,8 +201,8 @@ namespace NicoV5.Common
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.StreamSource = stream;
-                    bitmap.DecodePixelWidth = 160 + 48 * 3;
-                    bitmap.DecodePixelHeight = 120 + 36 * 3;
+                    bitmap.DecodePixelWidth = 160 + 48 * 0;
+                    bitmap.DecodePixelHeight = 120 + 36 * 0;
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.EndInit();
                     if (bitmap.CanFreeze)

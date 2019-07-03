@@ -79,6 +79,8 @@ namespace NicoV5.Mvvm.Main
 
                     // Temporaryの初期化
                     await SearchVideoByTemporaryModel.Initialize();
+
+                    SearchMylistModel.Initialize(await control.GetFavorite());
                 }
             });
 

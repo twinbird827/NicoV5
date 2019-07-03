@@ -27,7 +27,7 @@ namespace NicoV5.Mvvm.Models
         {
             var mail = SettingModel.Instance.MailAddress;
             var password = SettingModel.Instance.Password;
-            Cookies = Cookies ?? await LoginAsync(mail, password);
+            Cookies = Cookies ?? await LoginAsync(mail, password).ConfigureAwait(false);
 
             if (Cookies == null)
             {
@@ -61,7 +61,7 @@ namespace NicoV5.Mvvm.Models
         {
             try
             {
-                var cookies = await LoginAsync(mail, password);
+                var cookies = await LoginAsync(mail, password).ConfigureAwait(false);
                 return true;
             }
             catch
@@ -95,7 +95,7 @@ namespace NicoV5.Mvvm.Models
                         { "password", password }
                     });
 
-                    await client.PostAsync(loginUrl, content);
+                    await client.PostAsync(loginUrl, content).ConfigureAwait(false);
 
                     return handler.CookieContainer;
                 }

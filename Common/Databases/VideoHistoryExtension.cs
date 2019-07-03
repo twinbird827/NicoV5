@@ -38,8 +38,9 @@ namespace NicoV5.Common.Databases
             var sql = new StringBuilder();
             sql.AppendLine($"SELECT id, tick, count");
             sql.AppendLine($"FROM (");
-            sql.AppendLine($"    SELECT id, max(tick) tick, count(id) count");
+            sql.AppendLine($"    SELECT ifnull(id, '') id, ifnull(max(tick), 0) tick, count(id) count");
             sql.AppendLine($"    FROM   video_history");
+            sql.AppendLine($"    GROUP BY id");
             sql.AppendLine($")");
             sql.AppendLine($"ORDER BY {order} desc");
 
@@ -50,7 +51,7 @@ namespace NicoV5.Common.Databases
                     results.Add(new VVideoHistory(
                         reader.GetString(0),    // id
                         reader.GetInt64(1),     // tick
-                        reader.GetInt32(2)      // count
+                        reader.GetInt64(2)      // count
                     ));
                 }
             }

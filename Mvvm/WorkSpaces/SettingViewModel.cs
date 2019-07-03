@@ -63,7 +63,7 @@ namespace NicoV5.Mvvm.WorkSpaces
                     using (var accessor = DbAccessor.GetAccessor())
                     using (var control = accessor.GetCommand())
                     {
-                        if (!Session.Instance.CanLogin(MailAddress, Password))
+                        if (!(await Session.Instance.CanLoginAsync(MailAddress, Password).ConfigureAwait(false)))
                         {
                             ServiceFactory.MessageService.Error("入力したﾒｰﾙｱﾄﾞﾚｽ、ﾊﾟｽﾜｰﾄﾞではﾛｸﾞｲﾝできません。");
                             return;
@@ -72,12 +72,12 @@ namespace NicoV5.Mvvm.WorkSpaces
                         SettingModel.Instance.MailAddress = MailAddress;
                         SettingModel.Instance.Password = Password;
 
-                        await control.BeginTransaction();
+                        await control.BeginTransaction().ConfigureAwait(false);
                         await control.InsertOrReplaceSetting(
                             new TSetting(SettingKeys.MailAddress, MailAddress),
                             new TSetting(SettingKeys.Password, NicoUtil.EncryptString(Password))
-                        );
-                        await control.Commit();
+                        ).ConfigureAwait(false);
+                        await control.Commit().ConfigureAwait(false);
                     }
                 },
                 _ => 

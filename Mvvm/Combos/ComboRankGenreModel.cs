@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NicoV5.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace NicoV5.Mvvm.Combos
         /// ｲﾝｽﾀﾝｽ (ｼﾝｸﾞﾙﾄﾝﾊﾟﾀｰﾝ)
         /// </summary>
         public static ComboRankGenreModel Instance { get; } = new ComboRankGenreModel();
+
+        public override SettingKeys Key => SettingKeys.ComboRankGenre;
 
         private ComboRankGenreModel()
         {

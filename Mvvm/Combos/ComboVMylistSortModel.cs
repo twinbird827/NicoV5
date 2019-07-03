@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NicoV5.Common;
 
 namespace NicoV5.Mvvm.Combos
 {
@@ -13,6 +14,8 @@ namespace NicoV5.Mvvm.Combos
         /// ｲﾝｽﾀﾝｽ (ｼﾝｸﾞﾙﾄﾝﾊﾟﾀｰﾝ)
         /// </summary>
         public static ComboVMylistSortModel Instance { get; } = new ComboVMylistSortModel();
+
+        public override SettingKeys Key => SettingKeys.ComboVMylistSort;
 
         private ComboVMylistSortModel()
         {

@@ -29,7 +29,9 @@ namespace NicoV5.Mvvm.WorkSpaces
             Period.AddOnPropertyChanged(this, Combo_ChangeSelectedItem);
 
             // 初期表示ｲﾍﾞﾝﾄ
-            Loaded += async (sender, e) => await Reload(sender, e);
+            Loaded += Reload;
+
+            Disposed += (sender, e) => Loaded -= Reload;
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace NicoV5.Mvvm.WorkSpaces
         /// <summary>
         /// ｺﾝﾎﾞﾎﾞｯｸｽ選択変更ｲﾍﾞﾝﾄ
         /// </summary>
-        private async void Combo_ChangeSelectedItem(object sender, PropertyChangedEventArgs e)
+        private void Combo_ChangeSelectedItem(object sender, PropertyChangedEventArgs e)
         {
             var combo = sender as ComboboxModel;
 
@@ -68,13 +70,13 @@ namespace NicoV5.Mvvm.WorkSpaces
 
             if (e.PropertyName != nameof(combo.SelectedItem)) return;
 
-            await Reload(sender, e);
+            Reload(sender, e);
         }
 
         /// <summary>
         /// 再表示処理
         /// </summary>
-        private async Task Reload(object sender, EventArgs e)
+        private async void Reload(object sender, EventArgs e)
         {
             Videos.Clear();
             foreach (var video in await Source.GetRanking(Period.SelectedItem, Genre.SelectedItem))

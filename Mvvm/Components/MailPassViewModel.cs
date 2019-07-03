@@ -19,17 +19,20 @@ namespace NicoV5.Mvvm.Components
 
         protected override bool CanClickOK<T>(T parameter)
         {
+            bool result = false;
             if (string.IsNullOrEmpty(MailAddress) && string.IsNullOrEmpty(Password))
             {
                 ServiceFactory.MessageService.Error("ﾒｰﾙｱﾄﾞﾚｽとﾊﾟｽﾜｰﾄﾞを入力してください。");
                 return false;
             }
-            else if (!Session.Instance.CanLogin(MailAddress, Password))
+            result = Session.Instance.CanLoginAsync(MailAddress, Password).Result;
+
+            if (!result)
             {
                 ServiceFactory.MessageService.Error("指定したﾒｰﾙｱﾄﾞﾚｽとﾊﾟｽﾜｰﾄﾞではﾛｸﾞｲﾝできませんでした。");
-                return false;
             }
-            return true;
+
+            return result;
         }
 
         public string MailAddress

@@ -11,17 +11,17 @@ namespace NicoV5.Mvvm.Components
 {
     public class VideoHistoryViewModel : VideoViewModel
     {
-        public VideoHistoryViewModel(VideoModel source, int count) : base(source)
+        public VideoHistoryViewModel(VideoModel source, long count) : base(source)
         {
             Count = count;
         }
 
-        public int Count
+        public long Count
         {
             get { return _Count; }
             set { SetProperty(ref _Count, value); }
         }
-        private int _Count;
+        private long _Count;
 
         public override ICommand OnDoubleClick
         {

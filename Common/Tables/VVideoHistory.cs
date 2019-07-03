@@ -8,14 +8,14 @@ namespace NicoV5.Common.Tables
 {
     public class VVideoHistory
     {
-        public VVideoHistory(string id, long tick, int count)
+        public VVideoHistory(string id, long tick, long count)
         {
             VideoId = id;
             Tick = tick;
             Count = count;
         }
 
-        public VVideoHistory(string id, DateTime date, int count)
+        public VVideoHistory(string id, DateTime date, long count)
         {
             VideoId = id;
             Date = date;
@@ -32,6 +32,6 @@ namespace NicoV5.Common.Tables
 
         public DateTime Date { get; set; }
 
-        public int Count { get; set; }
+        public long Count { get; set; }
     }
 }

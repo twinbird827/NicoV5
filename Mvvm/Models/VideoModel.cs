@@ -233,19 +233,17 @@ namespace NicoV5.Mvvm.Models
             Status = VideoStatus.See;
         }
 
-        public static async Task<VideoModel> CreateInstance(VVideoHistory vvh)
+        public static VideoModel CreateInstance(VVideoHistory vvh)
         {
-            var v = await CreateInstance(vvh.VideoId);
+            var v = CreateInstance(vvh.VideoId);
 
             v.StartTime = vvh.Date;
 
             return v;
         }
 
-        public static async Task<VideoModel> CreateInstance(string id)
+        public static VideoModel CreateInstance(string id)
         {
-            await Task.Delay(1);
-
             var v = new VideoModel();
 
             v.VideoUrl = id;

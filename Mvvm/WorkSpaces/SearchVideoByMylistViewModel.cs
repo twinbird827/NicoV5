@@ -30,9 +30,9 @@ namespace NicoV5.Mvvm.WorkSpaces
                 video => new VideoViewModel(video),
                 AnonymousSynchronizationContext.Current
             );
-            if (!string.IsNullOrEmpty(Source.MylistUrl))
+            if (!string.IsNullOrEmpty(Source.MylistId))
             {
-                Word = Source.MylistUrl;
+                Word = Source.MylistId;
             }
             MylistTitle = Source.MylistTitle;
             MylistCreator = Source.MylistCreator;
@@ -46,8 +46,8 @@ namespace NicoV5.Mvvm.WorkSpaces
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(Source.MylistUrl):
-                        Word = source.MylistUrl;
+                    case nameof(Source.MylistId):
+                        Word = source.MylistId;
                         break;
                     case nameof(MylistTitle):
                         MylistTitle = Source.MylistTitle;

@@ -17,6 +17,10 @@
             <local:SearchVideoByMylistWindow />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type local:SearchVideoByHistoryViewModel}">
+            <local:SearchVideoByHistoryWindow />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type local:SearchVideoByRankingViewModel}">
             <local:SearchVideoByRankingWindow />
         </DataTemplate>

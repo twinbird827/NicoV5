@@ -18,12 +18,12 @@ namespace NicoV5.Mvvm.Components
         {
             Source = source;
             // 初期値設定
-            MylistTitle = MylistTitle;
-            MylistCreator = MylistCreator;
-            MylistDescription = MylistDescription;
-            UserId = UserId;
-            UserThumbnail = UserThumbnail;
-            MylistDate = MylistDate;
+            MylistTitle = Source.MylistTitle;
+            MylistCreator = Source.MylistCreator;
+            MylistDescription = Source.MylistDescription;
+            UserId = Source.UserId;
+            UserThumbnail = Source.UserThumbnail;
+            MylistDate = Source.MylistDate;
 
             // ﾓﾃﾞﾙ側で変更があったら通知する
             Source.AddOnPropertyChanged(this, (sender, e) =>
