@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:NicoV5"
              xmlns:converter="clr-namespace:WpfUtilV2.Mvvm.Converters;assembly=WpfUtilV2"
              xmlns:Behaviors="clr-namespace:WpfUtilV2.Mvvm.Behaviors;assembly=WpfUtilV2"
-             StartupUri="Mvvm\Main\MainWindow.xaml">
+             StartupUri="Mvvm\Main\MainWindow.xaml"
+             Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <!--

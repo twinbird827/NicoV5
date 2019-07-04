@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,5 +14,24 @@ namespace NicoV5
     /// </summary>
     public partial class App : Application
     {
+        // 例外をキャッチするイベントハンドラ
+        public static void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = e.ExceptionObject as Exception;
+            if (ex == null)
+            {
+                return;
+            }
+            using (var log = new EventLog())
+            {
+                log.Source = typeof(App).FullName;
+                log.WriteEntry(ex.ToString(), EventLogEntryType.Error);
+            }
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            AppDomain.CurrentDomain.UnhandledException += Application_UnhandledException;
+        }
     }
 }
