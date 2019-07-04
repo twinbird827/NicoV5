@@ -1,4 +1,5 @@
 ﻿using NicoV5.Mvvm.Combos;
+using StatefulModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,18 @@ namespace NicoV5.Mvvm.Models
     {
         public SearchVideoByRankingModel() : base(false)
         {
-
+            Videos = new ObservableSynchronizedCollection<VideoModel>();
         }
 
-        public async Task<IEnumerable<VideoModel>> GetRanking(ComboboxItemModel period, ComboboxItemModel genre)
+        public ObservableSynchronizedCollection<VideoModel> Videos
         {
-            var results = new List<VideoModel>();
+            get { return _Videos; }
+            set { SetProperty(ref _Videos, value); }
+        }
+        private ObservableSynchronizedCollection<VideoModel> _Videos;
+
+        public async Task GetRanking(ComboboxItemModel period, ComboboxItemModel genre)
+        {
             var p = period.Value;
             var g = genre.Value;
             var t = "all";
@@ -25,17 +32,18 @@ namespace NicoV5.Mvvm.Models
             if (string.IsNullOrWhiteSpace(p) || string.IsNullOrWhiteSpace(g) || string.IsNullOrWhiteSpace(t))
             {
                 ServiceFactory.MessageService.Error("検索ワードが入力されていません。");
-                return results;
+                return;
             }
 
             var url = $"http://www.nicovideo.jp/ranking/genre/{g}?tag={t}&term={p}&rss=2.0&lang=ja-jp";
             var xml = await GetXmlChannelAsync(url);
 
+            Videos.Clear();
             foreach (var item in xml.Descendants("item"))
             {
                 try
                 {
-                    results.Add(await CreateVideoFromXml(
+                    Videos.Add(await CreateVideoFromXml(
                         item,
                         "nico-info-total-view",
                         "nico-info-total-mylist",
@@ -47,8 +55,6 @@ namespace NicoV5.Mvvm.Models
                     ServiceFactory.MessageService.Exception(ex);
                 }
             }
-
-            return results;
         }
 
     }

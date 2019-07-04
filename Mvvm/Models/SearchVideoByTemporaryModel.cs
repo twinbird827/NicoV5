@@ -90,7 +90,10 @@ namespace NicoV5.Mvvm.Models
             if (!Videos.Any(v => v.VideoId == video.VideoId))
             {
                 // URLに追加
-                var txt = await GetStringAsync(string.Format(url, video, "", await GetToken()));
+                var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
+
+                // ﾘﾌﾚｯｼｭ
+                await video.Refresh(video.VideoUrl);
 
                 // 自身に追加
                 Videos.Insert(0, video);
@@ -106,10 +109,10 @@ namespace NicoV5.Mvvm.Models
             if (Videos.Any(v => v.VideoId == video.VideoId))
             {
                 // URLに追加
-                var txt = await GetStringAsync(string.Format(url, video, await GetToken()));
+                var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), await GetToken()));
 
                 // 自身に追加
-                Videos.Remove(video);
+                Videos.Remove(Videos.First(v => v.VideoId == video.VideoId));
 
                 MainViewModel.Instance.TemporaryCount = Videos.Count;
             }
@@ -122,6 +125,21 @@ namespace NicoV5.Mvvm.Models
             return Regex.Match(txt, "data-csrf-token=\"(?<token>[^\"]+)\"").Groups["token"].Value;
         }
 
+        public async Task<string> GetItemId(string id)
+        {
+            const string url = "http://www.nicovideo.jp/api/deflist/list";
+
+            var json = await GetJsonAsync(url);
+
+            foreach (dynamic item in json["mylistitem"])
+            {
+                if (id == item["item_data"]["video_id"])
+                {
+                    return item["item_id"];
+                }
+            }
+            return id;
+        }
     }
 }
 /*

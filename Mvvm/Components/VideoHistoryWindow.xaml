@@ -34,15 +34,6 @@
 
         </DockPanel>
 
-        <DockPanel DockPanel.Dock="Top">
-
-            <TextBlock DockPanel.Dock="Right"
-                       Text="{Binding Username}" />
-
-            <TextBlock Text="{Binding Tags}" />
-
-        </DockPanel>
-
         <TextBlock DockPanel.Dock="Top"
                    Text="{Binding Title}"
                    Style="{StaticResource TitleTextBlock}" />
@@ -65,6 +56,15 @@
                 <TextBlock Text="{Binding CommentCounter, StringFormat={}{0:N0}}" Width="60" />
 
             </StackPanel>
+
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Bottom">
+
+            <TextBlock DockPanel.Dock="Right"
+                       Text="{Binding Username}" />
+
+            <TextBlock Text="{Binding Tags}" />
 
         </DockPanel>
 

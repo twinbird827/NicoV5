@@ -27,6 +27,8 @@ namespace NicoV5.Mvvm.Components
             MylistCounter = Source.MylistCounter;
             CommentCounter = Source.CommentCounter;
             StartDate = Source.StartTime;
+            Tags = Source.Tags;
+            Username = Source.Username;
 
             // ﾓﾃﾞﾙ側で変更があったら通知する
             Source.AddOnPropertyChanged(this, (sender, e) =>
@@ -59,6 +61,12 @@ namespace NicoV5.Mvvm.Components
                         break;
                     case nameof(StartDate):
                         StartDate = Source.StartTime;
+                        break;
+                    case nameof(Tags):
+                        Tags = Source.Tags;
+                        break;
+                    case nameof(Username):
+                        Username = Source.Username;
                         break;
                 }
             });
@@ -128,6 +136,20 @@ namespace NicoV5.Mvvm.Components
             set { SetProperty(ref _StartDate, value); }
         }
         private DateTime _StartDate;
+
+        public string Tags
+        {
+            get { return _Tags; }
+            set { SetProperty(ref _Tags, value); }
+        }
+        private string _Tags;
+
+        public string Username
+        {
+            get { return _Username; }
+            set { SetProperty(ref _Username, value); }
+        }
+        private string _Username;
 
         /// <summary>
         /// 項目ﾀﾞﾌﾞﾙｸﾘｯｸ時ｲﾍﾞﾝﾄ

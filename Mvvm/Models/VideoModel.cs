@@ -232,7 +232,7 @@ namespace NicoV5.Mvvm.Models
             var xml = ToXml(txt).Descendants("thumb").First();
 
             VideoUrl = (string)xml.Element("watch_url");
-            Title = (string)xml.Element("watch_url");
+            Title = (string)xml.Element("title");
             Description = (string)xml.Element("description");
             ThumbnailUrl = (string)xml.Element("thumbnail_url");
             ViewCounter = (double)xml.Element("view_counter");

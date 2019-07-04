@@ -31,10 +31,12 @@ namespace NicoV5.Mvvm.Models
         {
             Instance = new SearchMylistModel();
 
-            await Instance.InitializePrivate(favorites);
+            Instance.InitializePrivate(favorites);
+
+            await Task.Delay(1);
         }
 
-        private async Task InitializePrivate(IEnumerable<TFavorite> favorites)
+        private void InitializePrivate(IEnumerable<TFavorite> favorites)
         {
             foreach (var favorite in favorites)
             {
@@ -53,9 +55,6 @@ namespace NicoV5.Mvvm.Models
                 Timer.Completed();
             };
             Timer.Start();
-
-            // 初回ﾛｰﾄﾞ
-            await Reload();
         }
 
         public AsyncTimer Timer { get; set; }
