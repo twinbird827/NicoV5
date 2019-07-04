@@ -67,6 +67,9 @@ namespace NicoV5.Mvvm.Services
         public override void Exception(Exception exception, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             base.Exception(exception, callerMemberName, callerFilePath, callerLineNumber);
+
+            var window = new WpfMessageWindow("Exception", "An unexpected exception occurred.", WpfMessageType.Error);
+            window.ShowModalWindow();
         }
     }
 }

@@ -100,7 +100,7 @@ namespace NicoV5.Mvvm.Models
         /// <param name="mylist">mylistのﾀｸﾞ名</param>
         /// <param name="comment">commentのﾀｸﾞ名</param>
         /// <returns></returns>
-        protected VideoModel CreateVideoFromXml(XElement item, string view, string mylist, string comment)
+        protected async Task<VideoModel> CreateVideoFromXml(XElement item, string view, string mylist, string comment)
         {
             // 明細部をXDocumentで読み込むために整形
             var descriptionString = item.Element("description").Value;
@@ -120,6 +120,8 @@ namespace NicoV5.Mvvm.Models
                     .First();
 
             var video = new VideoModel();
+
+            await video.Refresh(item.Element("link").Value);
 
             video.VideoUrl = item.Element("link").Value;
             video.Title = item.Element("title").Value;

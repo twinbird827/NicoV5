@@ -27,23 +27,35 @@ namespace NicoV5.Mvvm.Models
 
         public static SearchMylistModel Instance { get; private set; }
 
-        public static void Initialize(IEnumerable<TFavorite> favorites)
+        public static async Task Initialize(IEnumerable<TFavorite> favorites)
         {
             Instance = new SearchMylistModel();
 
+            await Instance.InitializePrivate(favorites);
+        }
+
+        private async Task InitializePrivate(IEnumerable<TFavorite> favorites)
+        {
             foreach (var favorite in favorites)
             {
-                Instance.Favorites.Add(favorite);
+                Favorites.Add(favorite);
             }
+
             // 5分毎にﾘﾛｰﾄﾞするﾀｲﾏｰを設定
-            Instance.Timer = new AsyncTimer();
-            Instance.Timer.Interval = TimeSpan.FromMinutes(5);
-            Instance.Timer.Tick += async (sender, e) =>
+            Timer = new AsyncTimer();
+            Timer.Interval = TimeSpan.FromMinutes(5);
+            Timer.Tick += async (sender, e) =>
             {
-                await Instance.Reload();
-                Instance.Timer.Completed();
+                // ﾏｲﾘｽﾄに新着がないか確認
+                await Reload();
+
+                // 処理完了
+                Timer.Completed();
             };
-            Instance.Timer.Start();
+            Timer.Start();
+
+            // 初回ﾛｰﾄﾞ
+            await Reload();
         }
 
         public AsyncTimer Timer { get; set; }

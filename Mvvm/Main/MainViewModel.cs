@@ -80,7 +80,8 @@ namespace NicoV5.Mvvm.Main
                     // Temporaryの初期化
                     await SearchVideoByTemporaryModel.Initialize();
 
-                    SearchMylistModel.Initialize(await control.GetFavorite());
+                    // SearchMylistModelの初期化
+                    await SearchMylistModel.Initialize(await control.GetFavorite());
                 }
             });
 
@@ -108,6 +109,13 @@ namespace NicoV5.Mvvm.Main
             set { SetProperty(ref _Current, value, true); }
         }
         private WorkSpaceViewModel _Current;
+
+        public int TemporaryCount
+        {
+            get { return _TemporaryCount; }
+            set { SetProperty(ref _TemporaryCount, value, true); }
+        }
+        private int _TemporaryCount;
 
         /// ****************************************************************************************************
         /// ﾒｿｯﾄﾞ定義

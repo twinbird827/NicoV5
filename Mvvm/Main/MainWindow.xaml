@@ -51,9 +51,14 @@
                     Command="{Binding OnClickMenu}"
                     CommandParameter="{x:Static local:MenuType.SearchByRanking}" />
 
-            <Button Content="TEMPORARY"
-                    Command="{Binding OnClickMenu}"
-                    CommandParameter="{x:Static local:MenuType.SearchByTemporary}" />
+            <Button Command="{Binding OnClickMenu}"
+                    CommandParameter="{x:Static local:MenuType.SearchByTemporary}" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="TEMPORARY (" />
+                    <TextBlock Text="{Binding TemporaryCount}" />
+                    <TextBlock Text=")" />
+                </StackPanel>
+            </Button>
 
             <Button Content="HISTORY"
                     Command="{Binding OnClickMenu}"

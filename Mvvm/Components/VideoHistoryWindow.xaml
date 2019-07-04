@@ -25,7 +25,8 @@
 
                 </StackPanel>
 
-                <TextBlock Text="{Binding LengthSeconds}" />
+                <TextBlock Text="{Binding LengthSeconds}"
+                           TextAlignment="Right" />
 
             </DockPanel>
 
@@ -33,15 +34,23 @@
 
         </DockPanel>
 
+        <DockPanel DockPanel.Dock="Top">
+
+            <TextBlock DockPanel.Dock="Right"
+                       Text="{Binding Username}" />
+
+            <TextBlock Text="{Binding Tags}" />
+
+        </DockPanel>
+
         <TextBlock DockPanel.Dock="Top"
-                   TextWrapping="Wrap"
                    Text="{Binding Title}"
-                   TextAlignment="Left" />
+                   Style="{StaticResource TitleTextBlock}" />
 
         <DockPanel DockPanel.Dock="Bottom">
 
             <TextBlock DockPanel.Dock="Right"
-                       Text="{Binding StartTime, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" 
+                       Text="{Binding StartDate, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" 
                        Foreground="DarkRed"/>
 
             <StackPanel Orientation="Horizontal">
@@ -59,10 +68,8 @@
 
         </DockPanel>
 
-        <TextBlock TextWrapping="Wrap"
-                   Foreground="DarkGray"
-                   Text="{Binding Description}"
-                   TextAlignment="Left" />
+        <TextBlock Text="{Binding Description}"
+                   Style="{StaticResource DescriptionTextBlock}" />
 
     </DockPanel>
 

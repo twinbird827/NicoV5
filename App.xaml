@@ -45,14 +45,21 @@
             <!--
                 共通定義
             -->
-            <Style x:Key="EqualMagnificationImage" TargetType="Image">
-                <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}" />
-                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}" />
-            </Style>
             <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
                 <Setter Property="Margin" Value="1" />
                 <Setter Property="Padding" Value="1" />
                 <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+            <Style x:Key="TitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextAlignment" Value="Left" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextAlignment" Value="Left" />
+                <Setter Property="Foreground" Value="DarkGray" />
             </Style>
             <Style x:Key="DefaultTextBox" TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
                 <Setter Property="Margin" Value="1" />
@@ -63,12 +70,17 @@
                 <Setter Property="Padding" Value="1" />
             </Style>
             <Style x:Key="DefaultButton" TargetType="Button" BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}">
+                <Setter Property="Margin" Value="3" />
+                <Setter Property="Padding" Value="1" />
+                <Setter Property="FontSize" Value="12" />
             </Style>
             <Style x:Key="DefaultImage" TargetType="Image">
                 <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}" />
                 <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}" />
             </Style>
             <Style x:Key="DefaultComboBox" TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                <Setter Property="Margin" Value="3" />
+                <Setter Property="Padding" Value="1" />
                 <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.Items}" />
                 <Setter Property="SelectedItem" Value="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.SelectedItem}" />
                 <Setter Property="DisplayMemberPath" Value="Description" />
@@ -132,7 +144,7 @@
             </Style>
 
             <!--
-                VideoItemsWindow定義
+                MylistWindow定義
             -->
             <Style x:Key="MylistWindow.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}">
                 <Setter Property="Behaviors:ControlMouseDoubleClickBehavior.Command" Value="{Binding OnDoubleClick}" />

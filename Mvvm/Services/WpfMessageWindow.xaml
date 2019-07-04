@@ -12,6 +12,14 @@
                       WindowStartupLocation="CenterOwner"
                       behavior:WindowRequestCloseBehavior.DialogResult="{Binding DialogResult}"
                       Title="{Binding Title}">
+    <Controls:MetroWindow.Resources>
+
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" />
+        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />
+        <Style TargetType="Image" BasedOn="{StaticResource DefaultImage}" />
+
+    </Controls:MetroWindow.Resources>
+
     <DockPanel Margin="10">
 
         <UniformGrid DockPanel.Dock="Bottom"
@@ -34,8 +42,7 @@
         </Grid>
 
         <Image DockPanel.Dock="Left"
-               Source="{Binding Icon}"
-               Style="{StaticResource EqualMagnificationImage}" />
+               Source="{Binding Icon}" />
 
         <TextBlock Margin="10"
                    Text="{Binding Message}"

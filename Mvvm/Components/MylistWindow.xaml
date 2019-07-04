@@ -17,9 +17,8 @@
                Source="{Binding UserThumbnail}" />
 
         <TextBlock DockPanel.Dock="Top"
-                   TextWrapping="Wrap"
                    Text="{Binding MylistTitle}"
-                   TextAlignment="Left" />
+                   Style="{StaticResource TitleTextBlock}" />
 
         <DockPanel DockPanel.Dock="Bottom">
 
@@ -37,10 +36,8 @@
 
         </DockPanel>
 
-        <TextBlock TextWrapping="Wrap"
-                   Foreground="DarkGray"
-                   Text="{Binding MylistDescription}"
-                   TextAlignment="Left" />
+        <TextBlock Text="{Binding MylistDescription}"
+                   Style="{StaticResource DescriptionTextBlock}" />
 
     </DockPanel>
     

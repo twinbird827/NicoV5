@@ -20,7 +20,7 @@
 
     <DockPanel>
 
-        <StackPanel DockPanel.Dock="Left" Width="100">
+        <StackPanel DockPanel.Dock="Left" Width="150">
 
             <Button Content="REFLESH" />
 

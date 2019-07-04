@@ -1,5 +1,6 @@
 ﻿using NicoV5.Common;
 using NicoV5.Mvvm.Components;
+using NicoV5.Mvvm.Main;
 using StatefulModel;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,8 @@ namespace NicoV5.Mvvm.Models
             {
                 var video = new VideoModel();
 
+                await video.Refresh(item["item_data"]["video_id"]);
+
                 video.VideoUrl = item["item_data"]["video_id"];
                 video.Title = item["item_data"]["title"];
                 video.Description = item["description"];
@@ -71,11 +74,13 @@ namespace NicoV5.Mvvm.Models
                 //video.LastCommentTime = Converter.item(data["lastCommentTime"]);
                 video.LengthSeconds = long.Parse(item["item_data"]["length_seconds"]);
                 video.ThumbnailUrl = item["item_data"]["thumbnail_url"];
-                video.LastResBody = item["item_data"]["last_res_body"];
+                //video.LastResBody = item["item_data"]["last_res_body"];
                 //video.CommunityIcon = data["communityIcon"];
 
                 Videos.Add(video);
             }
+
+            MainViewModel.Instance.TemporaryCount = Videos.Count;
         }
 
         public async Task AddVideo(VideoModel video)
@@ -89,6 +94,8 @@ namespace NicoV5.Mvvm.Models
 
                 // 自身に追加
                 Videos.Insert(0, video);
+
+                MainViewModel.Instance.TemporaryCount = Videos.Count;
             }
         }
 
@@ -103,6 +110,8 @@ namespace NicoV5.Mvvm.Models
 
                 // 自身に追加
                 Videos.Remove(video);
+
+                MainViewModel.Instance.TemporaryCount = Videos.Count;
             }
         }
 

@@ -50,7 +50,7 @@ namespace NicoV5.Mvvm.WorkSpaces
             {
                 foreach (var vvh in await control.GetVideoHistoryView(int.Parse(Sort.SelectedItem.Value)))
                 {
-                    Videos.Add(new VideoHistoryViewModel(VideoModel.CreateInstance(vvh), vvh.Count));
+                    Videos.Add(new VideoHistoryViewModel(await VideoModel.CreateInstance(vvh), vvh.Count));
                 }
             }
         }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Media.Imaging;
@@ -53,7 +54,13 @@ namespace NicoV5.Common
         /// <returns>ID</returns>
         public static string ToContentId(string word)
         {
-            return word?.Split('/').Last();
+            var s = word?.Split('/').Last();
+
+            if (!string.IsNullOrEmpty(s))
+            {
+                return Regex.Match(s, @"(?<id>[^\?]+)").Groups["id"].Value;
+            }
+            return s;
         }
 
         /// <summary>
@@ -193,7 +200,7 @@ namespace NicoV5.Common
 
                 using (var client = new HttpClient())
                 {
-                    bytes = await client.GetByteArrayAsync(url);
+                    bytes = await client.GetByteArrayAsync(url).ConfigureAwait(false);
                 }
 
                 using (WrappingStream stream = new WrappingStream(new MemoryStream(bytes)))
@@ -222,7 +229,7 @@ namespace NicoV5.Common
         {
             foreach (var url in urls)
             {
-                var thumnail = await ToThumbnail(url);
+                var thumnail = await ToThumbnail(url).ConfigureAwait(false);
                 if (thumnail != null)
                 {
                     return thumnail;

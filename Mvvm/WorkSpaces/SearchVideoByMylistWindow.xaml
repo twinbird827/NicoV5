@@ -24,7 +24,7 @@
 
     <DockPanel>
 
-        <StackPanel DockPanel.Dock="Left" Width="100">
+        <StackPanel DockPanel.Dock="Left" Width="150">
 
             <Controls:Underline Content="MYLIST"/>
 
@@ -83,7 +83,8 @@
 
                 </Grid>
 
-                <TextBlock Text="{Binding MylistTitle}" />
+                <TextBlock Text="{Binding MylistTitle}"
+                           Style="{StaticResource TitleTextBlock}" />
 
             </DockPanel>
 

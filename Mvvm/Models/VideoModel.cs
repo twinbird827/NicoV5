@@ -8,13 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Media.Imaging;
+using WpfUtilV2.Common;
 using WpfUtilV2.Extensions;
 using WpfUtilV2.Mvvm;
 
 namespace NicoV5.Mvvm.Models
 {
-    public class VideoModel : BindableBase
+    public class VideoModel : SearchVideoModel
     {
+        public VideoModel() : base(true)
+        {
+
+        }
+
+        public VideoModel(string word) : base(true)
+        {
+            WpfUtil.BeginInvoke(async () => await Refresh(word));
+        }
+
         /// <summary>
         /// ｺﾝﾃﾝﾂId (http://nico.ms/ の後に連結することでコンテンツへのURLになります)
         /// </summary>
@@ -115,16 +126,6 @@ namespace NicoV5.Mvvm.Models
         private DateTime _StartTime = default(DateTime);
 
         /// <summary>
-        /// 最終ｺﾒﾝﾄ時間
-        /// </summary>
-        public DateTime LastCommentTime
-        {
-            get { return _LastCommentTime; }
-            set { SetProperty(ref _LastCommentTime, value); }
-        }
-        private DateTime _LastCommentTime = default(DateTime);
-
-        /// <summary>
         /// 再生時間 (秒)
         /// </summary>
         public long LengthSeconds
@@ -147,12 +148,12 @@ namespace NicoV5.Mvvm.Models
                     return;
                 }
 
-                var urls = (new[] { ".L", ".M", "" }).Select(s => $"{value}{s}");
-
-                NicoUtil
-                    .ToThumbnail(urls)
-                    .ContinueWith(thumnail => Thumbnail = thumnail.Result)
-                    .ConfigureAwait(false);
+                WpfUtil.BeginInvoke(async () =>
+                {
+                    Thumbnail = await NicoUtil.ToThumbnail(
+                        (new[] { ".L", ".M", "" }).Select(s => $"{value}{s}")
+                    );
+                });
             }
         }
         private string _ThumbnailUrl = null;
@@ -168,40 +169,14 @@ namespace NicoV5.Mvvm.Models
         private BitmapImage _Thumbnail;
 
         /// <summary>
-        /// ｺﾐｭﾆﾃｨｱｲｺﾝのUrl
+        /// ﾕｰｻﾞ名
         /// </summary>
-        public string CommunityIcon
+        public string Username
         {
-            get { return _CommunityIcon; }
-            set { SetProperty(ref _CommunityIcon, value); }
+            get { return _Username; }
+            set { SetProperty(ref _Username, value); }
         }
-        private string _CommunityIcon = null;
-
-        /// <summary>
-        /// 最終更新時間
-        /// </summary>
-        public DateTime LastUpdateTime
-        {
-            get { return _LastUpdateTime; }
-            set { SetProperty(ref _LastUpdateTime, value); }
-        }
-        private DateTime _LastUpdateTime = DateTime.Now;
-
-        /// <summary>
-        /// 最新ｺﾒﾝﾄ
-        /// </summary>
-        public string LastResBody
-        {
-            get { return _LastResBody; }
-            set
-            {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    SetProperty(ref _LastResBody, value);
-                }
-            }
-        }
-        private string _LastResBody = null;
+        private string _Username = null;
 
         /// <summary>
         /// ｽﾃｰﾀｽ
@@ -233,22 +208,85 @@ namespace NicoV5.Mvvm.Models
             Status = VideoStatus.See;
         }
 
-        public static VideoModel CreateInstance(VVideoHistory vvh)
+        public static async Task<VideoModel> CreateInstance(VVideoHistory vvh)
         {
-            var v = CreateInstance(vvh.VideoId);
+            var v = await CreateInstance(vvh.VideoId);
 
             v.StartTime = vvh.Date;
 
             return v;
         }
 
-        public static VideoModel CreateInstance(string id)
+        public static async Task<VideoModel> CreateInstance(string url)
         {
             var v = new VideoModel();
 
-            v.VideoUrl = id;
+            await v.Refresh(url);
 
             return v;
+        }
+
+        public async Task Refresh(string url)
+        {
+            var txt = await GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{NicoUtil.ToContentId(url)}");
+            var xml = ToXml(txt).Descendants("thumb").First();
+
+            VideoUrl = (string)xml.Element("watch_url");
+            Title = (string)xml.Element("watch_url");
+            Description = (string)xml.Element("description");
+            ThumbnailUrl = (string)xml.Element("thumbnail_url");
+            ViewCounter = (double)xml.Element("view_counter");
+            CommentCounter = (double)xml.Element("comment_num");
+            MylistCounter = (double)xml.Element("mylist_counter");
+            StartTime = NicoUtil.ToDatetime((string)xml.Element("first_retrieve"));
+            LengthSeconds = NicoUtil.ToLengthSeconds((string)xml.Element("length"));
+            Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
+            Username = (string)xml.Element("user_nickname");
+/*
+<nicovideo_thumb_response status="ok">
+<thumb>
+<video_id>sm1234567</video_id>
+<title>My Chemical Romance - Teenagers</title>
+<description>無いようなのでうｐしてみました。キリ番踏んどった。やるなマイケミ(笑)お祝いのコメあざぁ～す！！</description>
+<thumbnail_url>
+http://nicovideo.cdn.nimg.jp/thumbnails/1234567/1234567
+</thumbnail_url>
+<first_retrieve>2007-10-08T21:14:54+09:00</first_retrieve>
+<length>2:51</length>
+<movie_type>flv</movie_type>
+<size_high>6866820</size_high>
+<size_low>6732537</size_low>
+<view_counter>81493</view_counter>
+<comment_num>1877</comment_num>
+<mylist_counter>618</mylist_counter>
+<last_res_body>
+ID巡りです うぃー 1234567 1234567 グリーンデイのビリー 1234567から 1234567 ええやん 1234567! 1234567から 1234567 カオスなIDから 1234567厉害了 乗れる 1234...
+</last_res_body>
+<watch_url>https://www.nicovideo.jp/watch/sm1234567</watch_url>
+<thumb_type>video</thumb_type>
+<embeddable>1</embeddable>
+<no_live_play>0</no_live_play>
+<tags domain="jp">
+<tag>MyChemicalRomance</tag>
+<tag>マイケミ</tag>
+<tag>MCR</tag>
+<tag>音楽</tag>
+<tag>洋楽</tag>
+<tag>奇跡のsm1234567</tag>
+<tag>←sm1234</tag>
+<tag>ジェラルド・ウェイ</tag>
+<tag>カオスなIDシリーズ</tag>
+<tag>Teenagers</tag>
+</tags>
+<genre>未設定</genre>
+<user_id>1792891</user_id>
+<user_nickname>000000</user_nickname>
+<user_icon_url>
+https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank_s.jpg
+</user_icon_url>
+</thumb>
+</nicovideo_thumb_response>
+*/
         }
 
         //public async Task Download(string path)
