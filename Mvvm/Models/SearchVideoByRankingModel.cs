@@ -35,7 +35,7 @@ namespace NicoV5.Mvvm.Models
             {
                 try
                 {
-                    results.Add(CreateVideoFromXml(
+                    results.Add(await CreateVideoFromXml(
                         item,
                         "nico-info-total-view",
                         "nico-info-total-mylist",

@@ -57,7 +57,7 @@ namespace NicoV5.Mvvm.WorkSpaces
                         return;
                     }
 
-                    var video = VideoModel.CreateInstance(result);
+                    var video = await VideoModel.CreateInstance(result);
 
                     if (video == null)
                     {

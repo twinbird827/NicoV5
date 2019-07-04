@@ -151,7 +151,7 @@ namespace NicoV5.Mvvm.Models
 
             foreach (var item in xml.Descendants("item"))
             {
-                Videos.Add(CreateVideoFromXml(
+                Videos.Add(await CreateVideoFromXml(
                     item,
                     "nico-numbers-view",
                     "nico-numbers-mylist",
