@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Media.Imaging;
@@ -206,6 +207,16 @@ namespace NicoV5.Mvvm.Models
 
             // ｽﾃｰﾀｽ変更
             Status = VideoStatus.See;
+
+            // 概要欄に未視聴のﾃﾞｰﾀがある場合はTemporaryに追加する
+            foreach (var id in Regex.Matches(Description, @"(?<id>sm[\d]+)")
+                    .OfType<Match>()
+                    .Select(m => m.Groups["id"].Value)
+                    .Where(tmp => !SearchVideoByHistoryModel.Instance.IsSee(tmp))
+                )
+            {
+                await SearchVideoByTemporaryModel.Instance.AddVideo(id);
+            }
         }
 
         public static async Task<VideoModel> CreateInstance(VVideoHistory vvh)
@@ -242,51 +253,97 @@ namespace NicoV5.Mvvm.Models
             LengthSeconds = NicoUtil.ToLengthSeconds((string)xml.Element("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
             Username = (string)xml.Element("user_nickname");
-/*
-<nicovideo_thumb_response status="ok">
-<thumb>
-<video_id>sm1234567</video_id>
-<title>My Chemical Romance - Teenagers</title>
-<description>無いようなのでうｐしてみました。キリ番踏んどった。やるなマイケミ(笑)お祝いのコメあざぁ～す！！</description>
-<thumbnail_url>
-http://nicovideo.cdn.nimg.jp/thumbnails/1234567/1234567
-</thumbnail_url>
-<first_retrieve>2007-10-08T21:14:54+09:00</first_retrieve>
-<length>2:51</length>
-<movie_type>flv</movie_type>
-<size_high>6866820</size_high>
-<size_low>6732537</size_low>
-<view_counter>81493</view_counter>
-<comment_num>1877</comment_num>
-<mylist_counter>618</mylist_counter>
-<last_res_body>
-ID巡りです うぃー 1234567 1234567 グリーンデイのビリー 1234567から 1234567 ええやん 1234567! 1234567から 1234567 カオスなIDから 1234567厉害了 乗れる 1234...
-</last_res_body>
-<watch_url>https://www.nicovideo.jp/watch/sm1234567</watch_url>
-<thumb_type>video</thumb_type>
-<embeddable>1</embeddable>
-<no_live_play>0</no_live_play>
-<tags domain="jp">
-<tag>MyChemicalRomance</tag>
-<tag>マイケミ</tag>
-<tag>MCR</tag>
-<tag>音楽</tag>
-<tag>洋楽</tag>
-<tag>奇跡のsm1234567</tag>
-<tag>←sm1234</tag>
-<tag>ジェラルド・ウェイ</tag>
-<tag>カオスなIDシリーズ</tag>
-<tag>Teenagers</tag>
-</tags>
-<genre>未設定</genre>
-<user_id>1792891</user_id>
-<user_nickname>000000</user_nickname>
-<user_icon_url>
-https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank_s.jpg
-</user_icon_url>
-</thumb>
-</nicovideo_thumb_response>
-*/
+            /*
+            <nicovideo_thumb_response status="ok">
+            <thumb>
+            <video_id>sm1234567</video_id>
+            <title>My Chemical Romance - Teenagers</title>
+            <description>無いようなのでうｐしてみました。キリ番踏んどった。やるなマイケミ(笑)お祝いのコメあざぁ～す！！</description>
+            <thumbnail_url>
+            http://nicovideo.cdn.nimg.jp/thumbnails/1234567/1234567
+            </thumbnail_url>
+            <first_retrieve>2007-10-08T21:14:54+09:00</first_retrieve>
+            <length>2:51</length>
+            <movie_type>flv</movie_type>
+            <size_high>6866820</size_high>
+            <size_low>6732537</size_low>
+            <view_counter>81493</view_counter>
+            <comment_num>1877</comment_num>
+            <mylist_counter>618</mylist_counter>
+            <last_res_body>
+            ID巡りです うぃー 1234567 1234567 グリーンデイのビリー 1234567から 1234567 ええやん 1234567! 1234567から 1234567 カオスなIDから 1234567厉害了 乗れる 1234...
+            </last_res_body>
+            <watch_url>https://www.nicovideo.jp/watch/sm1234567</watch_url>
+            <thumb_type>video</thumb_type>
+            <embeddable>1</embeddable>
+            <no_live_play>0</no_live_play>
+            <tags domain="jp">
+            <tag>MyChemicalRomance</tag>
+            <tag>マイケミ</tag>
+            <tag>MCR</tag>
+            <tag>音楽</tag>
+            <tag>洋楽</tag>
+            <tag>奇跡のsm1234567</tag>
+            <tag>←sm1234</tag>
+            <tag>ジェラルド・ウェイ</tag>
+            <tag>カオスなIDシリーズ</tag>
+            <tag>Teenagers</tag>
+            </tags>
+            <genre>未設定</genre>
+            <user_id>1792891</user_id>
+            <user_nickname>000000</user_nickname>
+            <user_icon_url>
+            https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank_s.jpg
+            </user_icon_url>
+            </thumb>
+            </nicovideo_thumb_response>
+            */
+            /*
+            This XML file does not appear to have any style information associated with it. The document tree is shown below.
+            <nicovideo_thumb_response status="ok">
+            <thumb>
+            <video_id>sm34525974</video_id>
+            <title>【女子2人】初めてパンの気持ちを理解する実況【I am Bread】</title>
+            <description>
+            全パンの想いを背負いし者----------------------関西弁女子実況グループ『サイコロジカルサーカス』が、第13回実況者杯に参加します!フリー部門実況動画の部、謎部門にエントリー！再生数・コメント・マイリス数で順位が決まります！！応援よろよろ！( ˘ω˘ )ニコニ広告が可能です！よければ広告で宣伝もよろしくお願いします(強欲の壺)テーマは【初】この動画はフリー部門実況動画の部の動画です。 今回は映画風の始まりにしてみました！楽しんで見てもらえるとうれしい！(*^^*)大会が終了しました！感想動画はこちら⇒今回のプログラム⇒mylist/63232841大会詳細⇒sm33431601パンフレット⇒mylist/55555016舞台袖⇒co3253598プレイメンバー…ノイジーワールド(紫)・馬面なおと(桃) Twitter…https://twitter.com/rojikaru2525
+            </description>
+            <thumbnail_url>http://tn.smilevideo.jp/smile?i=34525974.59215</thumbnail_url>
+            <first_retrieve>2019-01-25T18:11:01+09:00</first_retrieve>
+            <length>20:04</length>
+            <movie_type>mp4</movie_type>
+            <size_high>1</size_high>
+            <size_low>1</size_low>
+            <view_counter>2087</view_counter>
+            <comment_num>117</comment_num>
+            <mylist_counter>12</mylist_counter>
+            <last_res_body>
+            隠せてねえよw 食えねえよw きめえw … えw なんだこれw パンw 意味不明w ちょw w うぽつ うぽつ 続きやるなら見たい!! 88888888888888 まないた汚いとかトラ 自分で言うて自分で受 「泣けるなあ...
+            </last_res_body>
+            <watch_url>https://www.nicovideo.jp/watch/sm34525974</watch_url>
+            <thumb_type>video</thumb_type>
+            <embeddable>1</embeddable>
+            <no_live_play>0</no_live_play>
+            <tags domain="jp">
+            <tag category="1" lock="1">実況プレイ動画</tag>
+            <tag lock="1">ゲーム</tag>
+            <tag lock="1">サイコロジカルサーカス</tag>
+            <tag lock="1">第13回実況者杯本選</tag>
+            <tag lock="1">女性実況</tag>
+            <tag lock="1">I_am_Bread</tag>
+            <tag lock="1">女性実況単発リンク</tag>
+            <tag lock="1">実況プレイ単発リンク</tag>
+            <tag lock="1">ゲーム実況</tag>
+            <tag>バカゲー</tag>
+            </tags>
+            <genre>ゲーム</genre>
+            <user_id>49828637</user_id>
+            <user_nickname>ノイジーワールド</user_nickname>
+            <user_icon_url>
+            https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/s/4982/49828637.jpg?1467544909
+            </user_icon_url>
+            </thumb>
+            </nicovideo_thumb_response>
+             */
         }
 
         //public async Task Download(string path)
