@@ -20,7 +20,8 @@
                            Text="{Binding Status}" />
 
                 <TextBlock Text="{Binding LengthSeconds}"
-                           TextAlignment="Right" />
+                           TextAlignment="Right" 
+                           />
 
             </DockPanel>
 
