@@ -62,20 +62,20 @@ namespace NicoV5.Mvvm.Models
 
                 await video.Refresh(item["item_data"]["video_id"]);
 
-                video.VideoUrl = item["item_data"]["video_id"];
-                video.Title = item["item_data"]["title"];
-                video.Description = item["description"];
-                //video.Tags = data["tags"];
-                //video.CategoryTag = data["categoryTags"];
-                video.ViewCounter = long.Parse(item["item_data"]["view_counter"]);
-                video.MylistCounter = long.Parse(item["item_data"]["mylist_counter"]);
-                video.CommentCounter = long.Parse(item["item_data"]["num_res"]);
-                video.StartTime = NicoUtil.FromUnixTime((long)item["item_data"]["first_retrieve"]);
-                //video.LastCommentTime = Converter.item(data["lastCommentTime"]);
-                video.LengthSeconds = long.Parse(item["item_data"]["length_seconds"]);
-                video.ThumbnailUrl = item["item_data"]["thumbnail_url"];
-                //video.LastResBody = item["item_data"]["last_res_body"];
-                //video.CommunityIcon = data["communityIcon"];
+                //video.VideoUrl = item["item_data"]["video_id"];
+                //video.Title = item["item_data"]["title"];
+                //video.Description = item["description"];
+                ////video.Tags = data["tags"];
+                ////video.CategoryTag = data["categoryTags"];
+                //video.ViewCounter = long.Parse(item["item_data"]["view_counter"]);
+                //video.MylistCounter = long.Parse(item["item_data"]["mylist_counter"]);
+                //video.CommentCounter = long.Parse(item["item_data"]["num_res"]);
+                //video.StartTime = NicoUtil.FromUnixTime((long)item["item_data"]["first_retrieve"]);
+                ////video.LastCommentTime = Converter.item(data["lastCommentTime"]);
+                //video.LengthSeconds = long.Parse(item["item_data"]["length_seconds"]);
+                //video.ThumbnailUrl = item["item_data"]["thumbnail_url"];
+                ////video.LastResBody = item["item_data"]["last_res_body"];
+                ////video.CommunityIcon = data["communityIcon"];
 
                 Videos.Add(video);
             }
@@ -85,15 +85,22 @@ namespace NicoV5.Mvvm.Models
 
         public async Task AddVideo(VideoModel video)
         {
+            await AddVideo(video.VideoId);
+        }
+
+        public async Task AddVideo(string id)
+        {
             const string url = "http://www.nicovideo.jp/api/deflist/add?item_type=0&item_id={0}&description={1}&token={2}";
 
-            if (!Videos.Any(v => v.VideoId == video.VideoId))
+            if (!Videos.Any(v => v.VideoId == id))
             {
                 // URLに追加
-                var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
+                var txt = await GetStringAsync(string.Format(url, await GetItemId(id), "", await GetToken()));
 
                 // ﾘﾌﾚｯｼｭ
-                await video.Refresh(video.VideoUrl);
+                var video = new VideoModel();
+
+                await video.Refresh(id);
 
                 // 自身に追加
                 Videos.Insert(0, video);
@@ -113,6 +120,24 @@ namespace NicoV5.Mvvm.Models
 
                 // 自身に追加
                 Videos.Remove(Videos.First(v => v.VideoId == video.VideoId));
+
+                MainViewModel.Instance.TemporaryCount = Videos.Count;
+            }
+        }
+
+        public async Task DeleteVideo(string id)
+        {
+            const string url = "http://www.nicovideo.jp/api/deflist/delete?id_list[0][]={0}&token={1}";
+
+            var video = Videos.FirstOrDefault(v => v.VideoId == id);
+
+            if (video != null)
+            {
+                // 削除用URLを作成
+                var txt = await GetStringAsync(string.Format(url, await GetItemId(id), await GetToken()));
+
+                // 自身から削除
+                Videos.Remove(video);
 
                 MainViewModel.Instance.TemporaryCount = Videos.Count;
             }
