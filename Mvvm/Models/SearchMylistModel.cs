@@ -118,7 +118,6 @@ namespace NicoV5.Mvvm.Models
             using (var accessor = DbAccessor.GetAccessor())
             using (var control = accessor.GetCommand())
             {
-                await control.BeginTransaction();
                 foreach (var favorite in Favorites)
                 {
                     var mylist = Mylists.First(m => m.MylistId == favorite.Mylist);
@@ -127,7 +126,8 @@ namespace NicoV5.Mvvm.Models
 
                     var videos = mylist.Videos
                         .Where(video => favorite.Date < video.StartTime)
-                        .Where(video => !SearchVideoByTemporaryModel.Instance.Videos.Any(v => v.VideoId == video.VideoId));
+                        .Where(video => !SearchVideoByTemporaryModel.Instance.Videos.Any(v => v.VideoId == video.VideoId))
+                        .ToArray();
 
                     if (!videos.Any())
                     {
@@ -141,6 +141,7 @@ namespace NicoV5.Mvvm.Models
 
                     favorite.Date = videos.Max(video => video.StartTime);
                 }
+                await control.BeginTransaction();
                 await control.InsertOrReplaceFavorite(Favorites.ToArray());
                 await control.Commit();
             }

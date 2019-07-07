@@ -240,8 +240,9 @@ namespace NicoV5.Mvvm.Models
         public async Task Refresh(string url)
         {
             var txt = await GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{NicoUtil.ToContentId(url)}");
-            var xml = ToXml(txt).Descendants("thumb").First();
+            var xml = ToXml(txt).Descendants("thumb").FirstOrDefault();
 
+            if (xml == null) return;
             VideoUrl = (string)xml.Element("watch_url");
             Title = (string)xml.Element("title");
             Description = (string)xml.Element("description");
