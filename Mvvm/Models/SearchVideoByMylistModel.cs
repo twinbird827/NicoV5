@@ -160,6 +160,41 @@ namespace NicoV5.Mvvm.Models
             }
         }
 
+        public async Task<List<VideoModel>> GetVideos()
+        {
+            var results = new List<VideoModel>();
+            var xml = await GetXmlChannelAsync(MylistUrl);
+
+            foreach (var item in xml.Descendants("item"))
+            {
+                var video = new VideoModel();
+
+                // 明細部をXDocumentで読み込むために整形
+                var descriptionString = item.Element("description").Value;
+
+                descriptionString = descriptionString.Replace("&nbsp;", "&#x20;");
+                //descriptionString = HttpUtility.HtmlDecode(descriptionString);
+                descriptionString = descriptionString.Replace("&", "&amp;");
+                //descriptionString = descriptionString.Replace("'", "&apos;");
+
+                // 明細部読み込み
+                var desc = ToXml($"<root>{descriptionString}</root>");
+
+                // 動画時間
+                var lengthSecondsStr = (string)desc
+                        .Descendants("strong")
+                        .Where(x => (string)x.Attribute("class") == "nico-info-length")
+                        .First();
+
+                video.VideoUrl = item.Element("link").Value;
+                video.StartTime = NicoUtil.ToRankingDatetime(desc, "nico-info-date");
+
+                results.Add(video);
+            }
+
+            return results;
+        }
+
         /// <summary>
         /// ﾏｲﾘｽﾄからﾕｰｻﾞIDを取得します。
         /// </summary>
