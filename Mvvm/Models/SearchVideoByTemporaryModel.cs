@@ -60,22 +60,27 @@ namespace NicoV5.Mvvm.Models
             {
                 var video = new VideoModel();
 
-                await video.Refresh(item["item_data"]["video_id"]);
-
-                //video.VideoUrl = item["item_data"]["video_id"];
-                //video.Title = item["item_data"]["title"];
-                //video.Description = item["description"];
-                ////video.Tags = data["tags"];
-                ////video.CategoryTag = data["categoryTags"];
-                //video.ViewCounter = long.Parse(item["item_data"]["view_counter"]);
-                //video.MylistCounter = long.Parse(item["item_data"]["mylist_counter"]);
-                //video.CommentCounter = long.Parse(item["item_data"]["num_res"]);
-                //video.StartTime = NicoUtil.FromUnixTime((long)item["item_data"]["first_retrieve"]);
-                ////video.LastCommentTime = Converter.item(data["lastCommentTime"]);
-                //video.LengthSeconds = long.Parse(item["item_data"]["length_seconds"]);
-                //video.ThumbnailUrl = item["item_data"]["thumbnail_url"];
-                ////video.LastResBody = item["item_data"]["last_res_body"];
-                ////video.CommunityIcon = data["communityIcon"];
+                if (item["item_data"]["deleted"] == "0")
+                {
+                    await video.Refresh(item["item_data"]["video_id"]);
+                }
+                else
+                {
+                    video.VideoUrl = item["item_data"]["video_id"];
+                    video.Title = item["item_data"]["title"];
+                    video.Description = item["description"];
+                    //video.Tags = data["tags"];
+                    //video.CategoryTag = data["categoryTags"];
+                    video.ViewCounter = long.Parse(item["item_data"]["view_counter"]);
+                    video.MylistCounter = long.Parse(item["item_data"]["mylist_counter"]);
+                    video.CommentCounter = long.Parse(item["item_data"]["num_res"]);
+                    video.StartTime = NicoUtil.FromUnixTime((long)item["item_data"]["first_retrieve"]);
+                    //video.LastCommentTime = Converter.item(data["lastCommentTime"]);
+                    video.LengthSeconds = long.Parse(item["item_data"]["length_seconds"]);
+                    video.ThumbnailUrl = item["item_data"]["thumbnail_url"];
+                    //video.LastResBody = item["item_data"]["last_res_body"];
+                    //video.CommunityIcon = data["communityIcon"];
+                }
 
                 Videos.Add(video);
             }
@@ -101,6 +106,8 @@ namespace NicoV5.Mvvm.Models
                 var video = new VideoModel();
 
                 await video.Refresh(id);
+
+                video.Status = VideoStatus.New;
 
                 // 自身に追加
                 Videos.Insert(0, video);
@@ -165,9 +172,40 @@ namespace NicoV5.Mvvm.Models
             }
             return id;
         }
+
+        public bool IsTemporary(string id)
+        {
+            return Videos.Any(video => video.VideoId == id);
+        }
     }
 }
 /*
+<item type="object">
+  <item_type type="string">0</item_type>
+  <item_id type="string">1544398503</item_id>
+  <description type="string"></description>
+  <item_data type="object">
+    <video_id type="string">sm34299184</video_id>
+    <title type="string">拙者と見る初遊郭でも流すと盛り上がれるoped集.yabasugidesyo</title>
+    <thumbnail_url type="string">https://nicovideo.cdn.nimg.jp/web/img/common/video_deleted.jpg?_t=20181018</thumbnail_url>
+    <first_retrieve type="number">1544398502</first_retrieve>
+    <update_time type="number">1562693657</update_time>
+    <view_counter type="string">59151</view_counter>
+    <mylist_counter type="string">134</mylist_counter>
+    <num_res type="string">2752</num_res>
+    <group_type type="string">default</group_type>
+    <length_seconds type="string">1768</length_seconds>
+    <deleted type="string">3</deleted>
+    <last_res_body type="string">狩る・・・ 死ゾ リコーダーの音色が聞 消されてる あ もっと練習しろ ち、チノちゃん! 草 アマゾンズの奴で消さ 草 消されとる ここすき へぇっ!? 草 かっこいい 草 最低な空耳ほんとすき 草 うるさいですね… 初潮がきて... </last_res_body>
+    <watch_id type="string">sm34299184</watch_id>
+  </item_data>
+  <watch type="number">0</watch>
+  <create_time type="number">1562667945</create_time>
+  <update_time type="number">1562667945</update_time>
+</item>
+
+
+
 <item type="object">
   <item_type type="string">0</item_type>
   <item_id type="string">1367028098</item_id>
