@@ -31,12 +31,10 @@ namespace NicoV5.Mvvm.Models
         {
             Instance = new SearchMylistModel();
 
-            Instance.InitializePrivate(favorites);
-
-            await Task.Delay(1);
+            await Instance.InitializePrivate(favorites);
         }
 
-        private void InitializePrivate(IEnumerable<TFavorite> favorites)
+        private async Task InitializePrivate(IEnumerable<TFavorite> favorites)
         {
             foreach (var favorite in favorites)
             {
@@ -55,6 +53,9 @@ namespace NicoV5.Mvvm.Models
                 Timer.Completed();
             };
             Timer.Start();
+
+            // ﾏｲﾘｽﾄに新着がないか確認
+            await Reload();
         }
 
         public AsyncTimer Timer { get; set; }
@@ -122,24 +123,24 @@ namespace NicoV5.Mvvm.Models
                 {
                     var mylist = Mylists.First(m => m.MylistId == favorite.Mylist);
 
-                    await mylist.Reload();
+                    var videos = await mylist.GetVideos();
 
-                    var videos = mylist.Videos
+                    var targets = videos
                         .Where(video => favorite.Date < video.StartTime)
                         .Where(video => !SearchVideoByTemporaryModel.Instance.Videos.Any(v => v.VideoId == video.VideoId))
                         .ToArray();
 
-                    if (!videos.Any())
+                    if (!targets.Any())
                     {
                         continue;
                     }
 
-                    foreach (var video in videos)
+                    foreach (var video in targets)
                     {
                         await SearchVideoByTemporaryModel.Instance.AddVideo(video);
                     }
 
-                    favorite.Date = videos.Max(video => video.StartTime);
+                    favorite.Date = targets.Max(video => video.StartTime);
                 }
                 await control.BeginTransaction();
                 await control.InsertOrReplaceFavorite(Favorites.ToArray());
