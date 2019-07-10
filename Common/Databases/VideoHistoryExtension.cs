@@ -85,5 +85,26 @@ namespace NicoV5.Common.Databases
             return result;
         }
 
+        public static async Task<int> DeleteVideoHistory(this IDbControl control, params string[] views)
+        {
+            var columns = new[] { "id", "tick" };
+
+            int result = 0;
+
+            foreach (var chunk in views.Chunk(500))
+            {
+                var sql = new StringBuilder();
+
+                sql.AppendLine($"DELETE FROM video_history ");
+                sql.AppendLine($"WHERE       id IN (");
+                sql.AppendLine(chunk.Select(id => $"'{id}'").GetString(","));
+                sql.AppendLine($")");
+
+                // ﾊﾟﾗﾒｰﾀ設定
+                result += await control.ExecuteNonQueryAsync(sql.ToString());
+            }
+
+            return result;
+        }
     }
 }
