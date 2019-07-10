@@ -234,6 +234,15 @@ namespace NicoV5.Mvvm.Models
 
             await v.Refresh(url);
 
+            if (SearchVideoByHistoryModel.Instance.IsSee(v.VideoId))
+            {
+                v.Status = VideoStatus.See;
+            }
+            else if (SearchVideoByTemporaryModel.Instance.IsTemporary(v.VideoId))
+            {
+                v.Status = VideoStatus.Favorite;
+            }
+
             return v;
         }
 
@@ -242,7 +251,12 @@ namespace NicoV5.Mvvm.Models
             var txt = await GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{NicoUtil.ToContentId(url)}");
             var xml = ToXml(txt).Descendants("thumb").FirstOrDefault();
 
-            if (xml == null) return;
+            if (xml == null)
+            {
+                VideoUrl = url;
+                Status = VideoStatus.Delete;
+                return;
+            }
 
             VideoUrl = (string)xml.Element("watch_url");
             Title = (string)xml.Element("title");
@@ -256,6 +270,14 @@ namespace NicoV5.Mvvm.Models
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
             Username = (string)xml.Element("user_nickname");
             /*
+<?xml version="1.0" encoding="UTF-8"?>
+<nicovideo_thumb_response status="fail">
+  <error>
+    <code>DELETED</code>
+    <description>deleted</description>
+  </error>
+</nicovideo_thumb_response>
+
             <nicovideo_thumb_response status="ok">
             <thumb>
             <video_id>sm1234567</video_id>
