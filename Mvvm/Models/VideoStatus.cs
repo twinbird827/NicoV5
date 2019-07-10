@@ -15,6 +15,12 @@ namespace NicoV5.Mvvm.Models
         [Label("NEW")]
         New,
 
+        [Label("FAV")]
+        Favorite,
+
+        [Label("DEL")]
+        Delete,
+
         [Label("")]
         None,
     }
