@@ -54,8 +54,8 @@ namespace NicoV5.Mvvm.Models
             };
             Timer.Start();
 
-            // ﾏｲﾘｽﾄに新着がないか確認
-            await Reload();
+            //// ﾏｲﾘｽﾄに新着がないか確認
+            //await Reload();
         }
 
         public AsyncTimer Timer { get; set; }
