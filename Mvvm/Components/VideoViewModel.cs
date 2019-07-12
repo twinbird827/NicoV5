@@ -17,6 +17,19 @@ namespace NicoV5.Mvvm.Components
         {
             Source = source;
 
+            if (SearchVideoByHistoryModel.Instance.IsSee(Source.VideoId))
+            {
+                Source.Status = VideoStatus.See;
+            }
+            else if (SearchVideoByTemporaryModel.Instance.IsNew(Source.VideoId))
+            {
+                Source.Status = VideoStatus.New;
+            }
+            else if (SearchVideoByTemporaryModel.Instance.IsTemporary(Source.VideoId))
+            {
+                Source.Status = VideoStatus.Favorite;
+            }
+
             // 初期値設定
             Thumbnail = Source.Thumbnail;
             Status = Source.Status.GetLabel();

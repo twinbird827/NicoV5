@@ -173,6 +173,11 @@ namespace NicoV5.Mvvm.Models
             return id;
         }
 
+        public bool IsNew(string id)
+        {
+            return Videos.Any(video => video.VideoId == id && video.Status == VideoStatus.New);
+        }
+
         public bool IsTemporary(string id)
         {
             return Videos.Any(video => video.VideoId == id);
