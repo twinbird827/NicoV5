@@ -142,20 +142,7 @@ namespace NicoV5.Mvvm.Models
         public string ThumbnailUrl
         {
             get { return _ThumbnailUrl; }
-            set
-            {
-                if (!SetProperty(ref _ThumbnailUrl, value) || Thumbnail != null)
-                {
-                    return;
-                }
-
-                WpfUtil.BeginInvoke(async () =>
-                {
-                    Thumbnail = await NicoUtil.ToThumbnail(
-                        (new[] { ".L", ".M", "" }).Select(s => $"{value}{s}")
-                    );
-                });
-            }
+            set { SetProperty(ref _ThumbnailUrl, value); }
         }
         private string _ThumbnailUrl = null;
 
@@ -164,7 +151,16 @@ namespace NicoV5.Mvvm.Models
         /// </summary>
         public BitmapImage Thumbnail
         {
-            get { return _Thumbnail; }
+            get
+            {
+                WpfUtil.BeginInvoke(async () =>
+                {
+                    Thumbnail = await NicoUtil.ToThumbnail(
+                        (new[] { ".L", ".M", "" }).Select(s => $"{ThumbnailUrl}{s}")
+                    );
+                });
+                return _Thumbnail;
+            }
             set { SetProperty(ref _Thumbnail, value); }
         }
         private BitmapImage _Thumbnail;
