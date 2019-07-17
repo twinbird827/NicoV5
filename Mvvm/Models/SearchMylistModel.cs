@@ -27,14 +27,14 @@ namespace NicoV5.Mvvm.Models
 
         public static SearchMylistModel Instance { get; private set; }
 
-        public static async Task Initialize(IEnumerable<TFavorite> favorites)
+        public static void Initialize(IEnumerable<TFavorite> favorites)
         {
             Instance = new SearchMylistModel();
 
-            await Instance.InitializePrivate(favorites);
+            Instance.InitializePrivate(favorites);
         }
 
-        private async Task InitializePrivate(IEnumerable<TFavorite> favorites)
+        private void InitializePrivate(IEnumerable<TFavorite> favorites)
         {
             foreach (var favorite in favorites)
             {

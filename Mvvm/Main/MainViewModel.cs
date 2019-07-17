@@ -81,7 +81,7 @@ namespace NicoV5.Mvvm.Main
                     await SearchVideoByTemporaryModel.Initialize();
 
                     // SearchMylistModelの初期化
-                    await SearchMylistModel.Initialize(await control.GetFavorite());
+                    SearchMylistModel.Initialize(await control.GetFavorite());
 
                     // ｶﾚﾝﾄ設定
                     Current = new SearchVideoByRankingViewModel();
