@@ -22,11 +22,6 @@ namespace NicoV5.Mvvm.Models
 
         }
 
-        public VideoModel(string word) : base(true)
-        {
-            WpfUtil.BeginInvoke(async () => await Refresh(word));
-        }
-
         /// <summary>
         /// ｺﾝﾃﾝﾂId (http://nico.ms/ の後に連結することでコンテンツへのURLになります)
         /// </summary>
@@ -245,7 +240,7 @@ namespace NicoV5.Mvvm.Models
             return v;
         }
 
-        public async Task Refresh(string url)
+        private async Task Refresh(string url)
         {
             var txt = await GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{NicoUtil.ToContentId(url)}");
             var xml = ToXml(txt).Descendants("thumb").FirstOrDefault();

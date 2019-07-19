@@ -58,14 +58,15 @@ namespace NicoV5.Mvvm.Models
 
             foreach (dynamic item in json["mylistitem"])
             {
-                var video = new VideoModel();
+                VideoModel video;
 
                 if (item["item_data"]["deleted"] == "0")
                 {
-                    await video.Refresh(item["item_data"]["video_id"]);
+                    video = await VideoModel.CreateInstance(item["item_data"]["video_id"]);
                 }
                 else
                 {
+                    video = new VideoModel();
                     video.VideoUrl = item["item_data"]["video_id"];
                     video.Title = item["item_data"]["title"];
                     video.Description = item["description"];
@@ -90,29 +91,32 @@ namespace NicoV5.Mvvm.Models
 
         public async Task AddVideo(VideoModel video)
         {
-            await AddVideo(video.VideoId);
-        }
-
-        public async Task AddVideo(string id)
-        {
             const string url = "http://www.nicovideo.jp/api/deflist/add?item_type=0&item_id={0}&description={1}&token={2}";
 
-            if (!Videos.Any(v => v.VideoId == id))
+            if (!Videos.Any(v => v.VideoId == video.VideoId))
             {
                 // URLに追加
-                var txt = await GetStringAsync(string.Format(url, await GetItemId(id), "", await GetToken()));
+                var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
 
-                // ﾘﾌﾚｯｼｭ
-                var video = new VideoModel();
-
-                await video.Refresh(id);
-
+                // ｽﾃｰﾀｽ更新
                 video.Status = VideoStatus.New;
 
                 // 自身に追加
                 Videos.Insert(0, video);
 
                 MainViewModel.Instance.TemporaryCount = Videos.Count;
+            }
+        }
+
+        public async Task AddVideo(string id)
+        {
+            if (!Videos.Any(v => v.VideoId == id))
+            {
+                // ｲﾝｽﾀﾝｽ作成
+                var video = await VideoModel.CreateInstance(id);
+
+                // 追加
+                await AddVideo(video);
             }
         }
 

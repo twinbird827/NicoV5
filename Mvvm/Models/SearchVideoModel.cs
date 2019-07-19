@@ -121,9 +121,7 @@ namespace NicoV5.Mvvm.Models
                 //        .Where(x => (string)x.Attribute("class") == "nico-info-length")
                 //        .First();
 
-                var video = new VideoModel();
-
-                await video.Refresh(item.Element("link").Value);
+                var video = await VideoModel.CreateInstance(item.Element("link").Value);
 
                 //video.VideoUrl = item.Element("link").Value;
                 video.Title = item.Element("title").Value;

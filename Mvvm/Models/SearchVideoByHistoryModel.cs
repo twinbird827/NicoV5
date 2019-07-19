@@ -131,9 +131,7 @@ namespace NicoV5.Mvvm.Models
 
             foreach (var id in targets)
             {
-                var v = new VideoModel();
-
-                await v.Refresh(id);
+                var v = await VideoModel.CreateInstance(id);
 
                 if (v.Status == VideoStatus.Delete)
                 {

@@ -180,11 +180,11 @@ namespace NicoV5.Mvvm.Models
                 // 明細部読み込み
                 var desc = ToXml($"<root>{descriptionString}</root>");
 
-                // 動画時間
-                var lengthSecondsStr = (string)desc
-                        .Descendants("strong")
-                        .Where(x => (string)x.Attribute("class") == "nico-info-length")
-                        .First();
+                //// 動画時間
+                //var lengthSecondsStr = (string)desc
+                //        .Descendants("strong")
+                //        .Where(x => (string)x.Attribute("class") == "nico-info-length")
+                //        .First();
 
                 video.VideoUrl = item.Element("link").Value;
                 video.StartTime = NicoUtil.ToRankingDatetime(desc, "nico-info-date");
