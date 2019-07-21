@@ -98,6 +98,8 @@ namespace NicoV5.Mvvm.Models
                 // URLに追加
                 var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
 
+                await video.Refresh();
+
                 // ｽﾃｰﾀｽ更新
                 video.Status = VideoStatus.New;
 

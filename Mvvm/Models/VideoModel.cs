@@ -240,6 +240,11 @@ namespace NicoV5.Mvvm.Models
             return v;
         }
 
+        public async Task Refresh()
+        {
+            await Refresh(VideoId);
+        }
+
         private async Task Refresh(string url)
         {
             var txt = await GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{NicoUtil.ToContentId(url)}");
