@@ -203,10 +203,12 @@ namespace NicoV5.Mvvm.Models
             Status = VideoStatus.See;
 
             // 概要欄に未視聴のﾃﾞｰﾀがある場合はTemporaryに追加する
+            // ※過去Temporaryに追加したことがあるﾃﾞｰﾀは追加しない
             foreach (var id in Regex.Matches(Description, @"(?<id>sm[\d]+)")
                     .OfType<Match>()
                     .Select(m => m.Groups["id"].Value)
                     .Where(tmp => !SearchVideoByHistoryModel.Instance.IsSee(tmp))
+                    .Where(tmp => !SearchVideoByTemporaryModel.Instance.IsHistory(tmp))
                 )
             {
                 await SearchVideoByTemporaryModel.Instance.AddVideo(id);

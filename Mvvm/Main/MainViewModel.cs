@@ -66,22 +66,34 @@ namespace NicoV5.Mvvm.Main
                 using (var accessor = DbAccessor.GetAccessor())
                 using (var control = accessor.GetCommand())
                 {
+                    pdc.SetMessage("データベースの初期化中");
+
                     // 全体の初期化
                     await control.BeginTransaction();
                     await control.Initialize();
                     await control.Commit();
 
+                    pdc.SetMessage("設定情報の初期化中");
+
                     // SettingModelの初期化
                     SettingModel.Initialize(await control.GetSetting());
+
+                    pdc.SetMessage("履歴情報の初期化");
 
                     // ViewModelの初期化
                     await SearchVideoByHistoryModel.Initialize(await control.GetVideoHistory());
 
+                    pdc.SetMessage("ﾃﾝﾎﾟﾗﾘの初期化");
+
                     // Temporaryの初期化
-                    await SearchVideoByTemporaryModel.Initialize();
+                    await SearchVideoByTemporaryModel.Initialize(await control.GetTemporaryHistory());
+
+                    pdc.SetMessage("お気に入りの初期化");
 
                     // SearchMylistModelの初期化
                     SearchMylistModel.Initialize(await control.GetFavorite());
+
+                    pdc.SetMessage("ｶﾚﾝﾄ設定");
 
                     // ｶﾚﾝﾄ設定
                     Current = new SearchVideoByRankingViewModel();

@@ -106,11 +106,13 @@
     <Compile Include="Common\Databases\DbCreateExtension.cs" />
     <Compile Include="Common\Databases\FavoriteExtension.cs" />
     <Compile Include="Common\Databases\SettingExtension.cs" />
+    <Compile Include="Common\Databases\TemporaryHistoryExtension.cs" />
     <Compile Include="Common\Databases\VideoHistoryExtension.cs" />
     <Compile Include="Common\NicoUtil.cs" />
     <Compile Include="Common\SettingKeys.cs" />
     <Compile Include="Common\Tables\TFavorite.cs" />
     <Compile Include="Common\Tables\TSetting.cs" />
+    <Compile Include="Common\Tables\TTemporaryHistory.cs" />
     <Compile Include="Common\Tables\TVideoHistory.cs" />
     <Compile Include="Common\Tables\VVideoHistory.cs" />
     <Compile Include="Mvvm\Combos\ComboboxItemModel.cs" />

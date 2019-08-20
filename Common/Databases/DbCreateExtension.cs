@@ -23,6 +23,9 @@ namespace NicoV5.Common.Databases
 
             // お気に入りﾃｰﾌﾞﾙの作成
             await control.CreateFavorite();
+
+            // お気に入り履歴ﾃｰﾌﾞﾙの作成
+            await control.CreateTemporaryHistory();
         }
 
         private static async Task CreateSetting(this IDbControl control)
@@ -57,6 +60,19 @@ namespace NicoV5.Common.Databases
             var sql = new StringBuilder();
 
             sql.AppendLine($"CREATE TABLE IF NOT EXISTS favorite (");
+            sql.AppendLine($"    id   TEXT    NOT NULL,");
+            sql.AppendLine($"    tick INTEGER NOT NULL,");
+            sql.AppendLine($"PRIMARY KEY (id)");
+            sql.AppendLine($")");
+
+            await control.ExecuteNonQueryAsync(sql.ToString());
+        }
+
+        private static async Task CreateTemporaryHistory(this IDbControl control)
+        {
+            var sql = new StringBuilder();
+
+            sql.AppendLine($"CREATE TABLE IF NOT EXISTS temporary_history (");
             sql.AppendLine($"    id   TEXT    NOT NULL,");
             sql.AppendLine($"    tick INTEGER NOT NULL,");
             sql.AppendLine($"PRIMARY KEY (id)");

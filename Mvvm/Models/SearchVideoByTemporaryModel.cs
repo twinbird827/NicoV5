@@ -1,4 +1,6 @@
 ﻿using NicoV5.Common;
+using NicoV5.Common.Databases;
+using NicoV5.Common.Tables;
 using NicoV5.Mvvm.Components;
 using NicoV5.Mvvm.Main;
 using StatefulModel;
@@ -28,7 +30,12 @@ namespace NicoV5.Mvvm.Models
         }
         private ObservableSynchronizedCollection<VideoModel> _Videos;
 
-        public static async Task Initialize()
+        /// <summary>
+        /// 内部保持情報
+        /// </summary>
+        private List<TTemporaryHistory> Histories { get; set; }
+
+        public static async Task Initialize(TTemporaryHistory[] histories)
         {
             Instance = new SearchVideoByTemporaryModel();
 
@@ -46,6 +53,8 @@ namespace NicoV5.Mvvm.Models
             }
 
             await Instance.ReloadTemporary();
+
+            Instance.Histories = new List<TTemporaryHistory>(histories);
         }
 
         public async Task ReloadTemporary()
@@ -98,13 +107,16 @@ namespace NicoV5.Mvvm.Models
                 // URLに追加
                 var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
 
-                await video.Refresh();
+                //await video.Refresh();
 
                 // ｽﾃｰﾀｽ更新
                 video.Status = VideoStatus.New;
 
                 // 自身に追加
                 Videos.Insert(0, video);
+
+                // 履歴に追加
+                await AddHistory(video.VideoId);
 
                 MainViewModel.Instance.TemporaryCount = Videos.Count;
             }
@@ -179,6 +191,19 @@ namespace NicoV5.Mvvm.Models
             return id;
         }
 
+        private async Task AddHistory(string id)
+        {
+            using (var accessor = DbAccessor.GetAccessor())
+            using (var control = accessor.GetCommand())
+            {
+                var history = new TTemporaryHistory(id, DateTime.Now);
+
+                await control.InsertOrReplaceTemporaryHistory(history);
+
+                Histories.Add(history);
+            }
+        }
+
         public bool IsNew(string id)
         {
             return Videos.Any(video => video.VideoId == id && video.Status == VideoStatus.New);
@@ -187,6 +212,11 @@ namespace NicoV5.Mvvm.Models
         public bool IsTemporary(string id)
         {
             return Videos.Any(video => video.VideoId == id);
+        }
+
+        public bool IsHistory(string id)
+        {
+            return Histories.Any(history => history.VideoId == id);
         }
     }
 }
