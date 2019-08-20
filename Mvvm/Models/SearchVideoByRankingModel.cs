@@ -38,6 +38,7 @@ namespace NicoV5.Mvvm.Models
             var url = $"http://www.nicovideo.jp/ranking/genre/{g}?tag={t}&term={p}&rss=2.0&lang=ja-jp";
             var xml = await GetXmlChannelAsync(url);
 
+            Exception lastException = null;
             Videos.Clear();
             foreach (var item in xml.Descendants("item"))
             {
@@ -52,8 +53,13 @@ namespace NicoV5.Mvvm.Models
                 }
                 catch (Exception ex)
                 {
-                    ServiceFactory.MessageService.Exception(ex);
+                    lastException = ex;
                 }
+            }
+
+            if (lastException != null)
+            {
+                ServiceFactory.MessageService.Exception(lastException);
             }
         }
     }

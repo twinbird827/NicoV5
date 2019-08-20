@@ -68,7 +68,7 @@ namespace NicoV5.Mvvm.Services
         {
             base.Exception(exception, callerMemberName, callerFilePath, callerLineNumber);
 
-            var window = new WpfMessageWindow("Exception", "An unexpected exception occurred.", WpfMessageType.Error);
+            var window = new WpfMessageWindow("Exception", exception.ToString(), WpfMessageType.Error);
             window.ShowModalWindow();
         }
     }
