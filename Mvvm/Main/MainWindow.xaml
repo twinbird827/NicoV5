@@ -13,7 +13,7 @@
                       BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1"
                       TitleCaps="False"
-                      Title="MainWindow"
+                      Title="{Binding Current.ApplicationTitle}" 
                       behavior:FrameworkElementLoadedBehavior.Command="{Binding OnLoaded}"
                       behavior:WindowClosedBehavior.Disposable="{Binding}">
     <Controls:MetroWindow.Resources>
