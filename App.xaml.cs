@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfUtilV2.Mvvm.Service;
 
 namespace NicoV5
 {
@@ -22,11 +23,17 @@ namespace NicoV5
             {
                 return;
             }
+
+            // 画面にﾒｯｾｰｼﾞ表示
+            ServiceFactory.MessageService.Exception(ex);
+
+            // ｲﾍﾞﾝﾄﾋﾞｭｰｱにﾒｯｾｰｼﾞ表示
             using (var log = new EventLog())
             {
                 log.Source = typeof(App).FullName;
                 log.WriteEntry(ex.ToString(), EventLogEntryType.Error);
             }
+
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
