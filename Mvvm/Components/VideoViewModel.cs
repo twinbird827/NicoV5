@@ -217,7 +217,7 @@ namespace NicoV5.Mvvm.Components
                 async e =>
                 {
                     // ﾃﾝﾎﾟﾗﾘに追加
-                    await SearchVideoByTemporaryModel.Instance.AddVideo(Source);
+                    await SearchVideoByTemporaryModel.Instance.AddVideo(Source.VideoId);
                 });
             }
         }

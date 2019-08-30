@@ -137,7 +137,7 @@ namespace NicoV5.Mvvm.Models
         public string ThumbnailUrl
         {
             get { return _ThumbnailUrl; }
-            set { SetProperty(ref _ThumbnailUrl, value); var tmp = Thumbnail; }
+            set { SetProperty(ref _ThumbnailUrl, value); }
         }
         private string _ThumbnailUrl = null;
 
@@ -146,20 +146,8 @@ namespace NicoV5.Mvvm.Models
         /// </summary>
         public BitmapImage Thumbnail
         {
-            get
-            {
-                if (_Thumbnail == null)
-                {
-                    WpfUtil.BeginInvoke(async () =>
-                    {
-                        Thumbnail = await NicoUtil.ToThumbnail(
-                            (new[] { ".L", ".M", "" }).Select(s => $"{ThumbnailUrl}{s}")
-                        );
-                    });
-                }
-                return _Thumbnail;
-            }
-            set { SetProperty(ref _Thumbnail, value); }
+            get => _Thumbnail;
+            set => SetProperty(ref _Thumbnail, value);
         }
         private BitmapImage _Thumbnail;
 
@@ -242,9 +230,11 @@ namespace NicoV5.Mvvm.Models
             return v;
         }
 
-        public async Task Refresh()
+        public async Task RefreshThumbnail()
         {
-            await Refresh(VideoId);
+            Thumbnail = await NicoUtil.ToThumbnail(
+                (new[] { ".L", ".M", "" }).Select(s => $"{ThumbnailUrl}{s}")
+            );
         }
 
         private async Task Refresh(string url)
@@ -270,6 +260,8 @@ namespace NicoV5.Mvvm.Models
             LengthSeconds = NicoUtil.ToLengthSeconds((string)xml.Element("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
             Username = (string)xml.Element("user_nickname");
+
+            await RefreshThumbnail();
             /*
 <?xml version="1.0" encoding="UTF-8"?>
 <nicovideo_thumb_response status="fail">

@@ -100,14 +100,27 @@ namespace NicoV5.Mvvm.Models
 
         public async Task AddVideo(VideoModel video)
         {
-            const string url = "http://www.nicovideo.jp/api/deflist/add?item_type=0&item_id={0}&description={1}&token={2}";
-
             if (!Videos.Any(v => v.VideoId == video.VideoId))
             {
+                // 元ﾃﾞｰﾀのｽﾃｰﾀｽ更新
+                video.Status = VideoStatus.New;
+
+                // ﾋﾞﾃﾞｵ追加
+                await AddVideo(video.VideoId);
+            }
+        }
+
+        public async Task AddVideo(string id)
+        {
+            const string url = "http://www.nicovideo.jp/api/deflist/add?item_type=0&item_id={0}&description={1}&token={2}";
+
+            if (!Videos.Any(v => v.VideoId == id))
+            {
+                // ｲﾝｽﾀﾝｽ作成
+                var video = await VideoModel.CreateInstance(id);
+
                 // URLに追加
                 var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), "", await GetToken()));
-
-                await video.Refresh();
 
                 // ｽﾃｰﾀｽ更新
                 video.Status = VideoStatus.New;
@@ -122,32 +135,9 @@ namespace NicoV5.Mvvm.Models
             }
         }
 
-        public async Task AddVideo(string id)
-        {
-            if (!Videos.Any(v => v.VideoId == id))
-            {
-                // ｲﾝｽﾀﾝｽ作成
-                var video = await VideoModel.CreateInstance(id);
-
-                // 追加
-                await AddVideo(video);
-            }
-        }
-
         public async Task DeleteVideo(VideoModel video)
         {
-            const string url = "http://www.nicovideo.jp/api/deflist/delete?id_list[0][]={0}&token={1}";
-
-            if (Videos.Any(v => v.VideoId == video.VideoId))
-            {
-                // URLに追加
-                var txt = await GetStringAsync(string.Format(url, await GetItemId(video.VideoId), await GetToken()));
-
-                // 自身に追加
-                Videos.Remove(Videos.First(v => v.VideoId == video.VideoId));
-
-                MainViewModel.Instance.TemporaryCount = Videos.Count;
-            }
+            await DeleteVideo(video.VideoId);
         }
 
         public async Task DeleteVideo(string id)
