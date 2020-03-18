@@ -121,26 +121,33 @@ namespace NicoV5.Mvvm.Models
             {
                 foreach (var favorite in Favorites)
                 {
-                    var mylist = Mylists.First(m => m.MylistId == favorite.Mylist);
-
-                    var videos = await mylist.GetVideos();
-
-                    var targets = videos
-                        .Where(video => favorite.Date < video.StartTime)
-                        .Where(video => !SearchVideoByTemporaryModel.Instance.Videos.Any(v => v.VideoId == video.VideoId))
-                        .ToArray();
-
-                    if (!targets.Any())
+                    try
                     {
-                        continue;
-                    }
+                        var mylist = Mylists.First(m => m.MylistId == favorite.Mylist);
 
-                    foreach (var video in targets)
+                        var videos = await mylist.GetVideos();
+
+                        var targets = videos
+                            .Where(video => favorite.Date < video.StartTime)
+                            .Where(video => !SearchVideoByTemporaryModel.Instance.Videos.Any(v => v.VideoId == video.VideoId))
+                            .ToArray();
+
+                        if (!targets.Any())
+                        {
+                            continue;
+                        }
+
+                        foreach (var video in targets)
+                        {
+                            await SearchVideoByTemporaryModel.Instance.AddVideo(video);
+                        }
+
+                        favorite.Date = targets.Max(video => video.StartTime);
+                    }
+                    catch
                     {
-                        await SearchVideoByTemporaryModel.Instance.AddVideo(video);
+                        Console.WriteLine();
                     }
-
-                    favorite.Date = targets.Max(video => video.StartTime);
                 }
                 await control.BeginTransaction();
                 await control.InsertOrReplaceFavorite(Favorites.ToArray());
