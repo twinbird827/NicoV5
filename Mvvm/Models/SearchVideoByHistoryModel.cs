@@ -62,6 +62,7 @@ namespace NicoV5.Mvvm.Models
 
             // 履歴に削除されたﾃﾞｰﾀがないか確認
             //await RefreshAsync();
+            await Task.Delay(1);
         }
 
         /// <summary>
